@@ -564,7 +564,6 @@ export type VehicleNeedCreateOrConnectWithoutCompanyInput = {
 
 export type VehicleNeedCreateManyCompanyInputEnvelope = {
   data: Prisma.VehicleNeedCreateManyCompanyInput | Prisma.VehicleNeedCreateManyCompanyInput[]
-  skipDuplicates?: boolean
 }
 
 export type VehicleNeedUpsertWithWhereUniqueWithoutCompanyInput = {
@@ -627,7 +626,6 @@ export type VehicleNeedCreateOrConnectWithoutVehicleInput = {
 
 export type VehicleNeedCreateManyVehicleInputEnvelope = {
   data: Prisma.VehicleNeedCreateManyVehicleInput | Prisma.VehicleNeedCreateManyVehicleInput[]
-  skipDuplicates?: boolean
 }
 
 export type VehicleNeedUpsertWithWhereUniqueWithoutVehicleInput = {
@@ -1488,7 +1486,6 @@ export type VehicleNeedCreateManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * The data used to create many VehicleNeeds.
    */
   data: Prisma.VehicleNeedCreateManyInput | Prisma.VehicleNeedCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1507,7 +1504,6 @@ export type VehicleNeedCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ext
    * The data used to create many VehicleNeeds.
    */
   data: Prisma.VehicleNeedCreateManyInput | Prisma.VehicleNeedCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

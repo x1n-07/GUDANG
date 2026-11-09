@@ -1,7 +1,17 @@
 const API_BASE = '/api';
 
+// Helper to get token from localStorage
+const getStoredToken = () => localStorage.getItem('warehouse_token');
+const setStoredToken = (token: string | null) => {
+  if (token) {
+    localStorage.setItem('warehouse_token', token);
+  } else {
+    localStorage.removeItem('warehouse_token');
+  }
+};
+
 export async function request<T>(path: string, opts: RequestInit = {}): Promise<T> {
-  const token = (window as any).__TOKEN__;
+  const token = getStoredToken();
   const headers = new Headers(opts.headers);
   if (token) headers.set('Authorization', `Bearer ${token}`);
   headers.set('Content-Type', 'application/json');
@@ -10,6 +20,13 @@ export async function request<T>(path: string, opts: RequestInit = {}): Promise<
 
   if (!resp.ok) {
     let errMessage = resp.statusText;
+    // Auto logout only for authenticated requests (not the login request itself)
+    if (resp.status === 401 && token && path !== '/auth/login') {
+      setStoredToken(null);
+      localStorage.removeItem('warehouse_user');
+      localStorage.removeItem('activeTab');
+      window.location.reload();
+    }
     try {
       const err = await resp.json();
       errMessage = err.message || errMessage;
@@ -25,7 +42,9 @@ export async function apiLogin(username: string, password: string) {
     method: 'POST',
     body: JSON.stringify({ username, password }),
   });
-  (window as any).__TOKEN__ = data.token;
+  setStoredToken(data.token);
+  // Store user info temporarily to help with initial load
+  localStorage.setItem('warehouse_user', JSON.stringify(data.user));
   return data.user;
 }
 
@@ -59,8 +78,8 @@ export const apiVehicles = {
   updateStatus: (id: string, status: string) =>
     request<any>(`/vehicles/${id}/status`, { method: 'PATCH', body: JSON.stringify({ status }) }),
   logCreate: (p: any) => request<any>('/vehicles/logs', { method: 'POST', body: JSON.stringify(p) }),
-  finishTrip: (logId: string) =>
-    request<any>(`/vehicles/logs/${logId}/finish`, { method: 'PATCH' }),
+  finishTrip: (logId: string, endOdometer?: number) =>
+    request<any>(`/vehicles/logs/${logId}/finish`, { method: 'PATCH', body: JSON.stringify({ endOdometer }) }),
   needCreate: (p: any) => request<any>('/vehicles/needs', { method: 'POST', body: JSON.stringify(p) }),
 };
 
@@ -88,4 +107,9 @@ export const apiUsers = {
   toggleDisabled: (id: string, disabled: boolean) =>
     request<any>(`/users/${id}/disabled`, { method: 'PATCH', body: JSON.stringify({ disabled }) }),
   delete: (id: string) => request<void>(`/users/${id}`, { method: 'DELETE' }),
+};
+
+export const apiLogout = () => {
+  setStoredToken(null);
+  localStorage.removeItem('warehouse_user');
 };

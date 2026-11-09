@@ -20,8 +20,26 @@ export type VehicleItemModel = runtime.Types.Result.DefaultSelection<Prisma.$Veh
 
 export type AggregateVehicleItem = {
   _count: VehicleItemCountAggregateOutputType | null
+  _avg: VehicleItemAvgAggregateOutputType | null
+  _sum: VehicleItemSumAggregateOutputType | null
   _min: VehicleItemMinAggregateOutputType | null
   _max: VehicleItemMaxAggregateOutputType | null
+}
+
+export type VehicleItemAvgAggregateOutputType = {
+  odometer: number | null
+  lastOilChangeOdometer: number | null
+  oilChangeInterval: number | null
+  lastServiceOdometer: number | null
+  serviceInterval: number | null
+}
+
+export type VehicleItemSumAggregateOutputType = {
+  odometer: number | null
+  lastOilChangeOdometer: number | null
+  oilChangeInterval: number | null
+  lastServiceOdometer: number | null
+  serviceInterval: number | null
 }
 
 export type VehicleItemMinAggregateOutputType = {
@@ -31,6 +49,11 @@ export type VehicleItemMinAggregateOutputType = {
   plateNumber: string | null
   name: string | null
   status: string | null
+  odometer: number | null
+  lastOilChangeOdometer: number | null
+  oilChangeInterval: number | null
+  lastServiceOdometer: number | null
+  serviceInterval: number | null
 }
 
 export type VehicleItemMaxAggregateOutputType = {
@@ -40,6 +63,11 @@ export type VehicleItemMaxAggregateOutputType = {
   plateNumber: string | null
   name: string | null
   status: string | null
+  odometer: number | null
+  lastOilChangeOdometer: number | null
+  oilChangeInterval: number | null
+  lastServiceOdometer: number | null
+  serviceInterval: number | null
 }
 
 export type VehicleItemCountAggregateOutputType = {
@@ -49,9 +77,30 @@ export type VehicleItemCountAggregateOutputType = {
   plateNumber: number
   name: number
   status: number
+  odometer: number
+  lastOilChangeOdometer: number
+  oilChangeInterval: number
+  lastServiceOdometer: number
+  serviceInterval: number
   _all: number
 }
 
+
+export type VehicleItemAvgAggregateInputType = {
+  odometer?: true
+  lastOilChangeOdometer?: true
+  oilChangeInterval?: true
+  lastServiceOdometer?: true
+  serviceInterval?: true
+}
+
+export type VehicleItemSumAggregateInputType = {
+  odometer?: true
+  lastOilChangeOdometer?: true
+  oilChangeInterval?: true
+  lastServiceOdometer?: true
+  serviceInterval?: true
+}
 
 export type VehicleItemMinAggregateInputType = {
   id?: true
@@ -60,6 +109,11 @@ export type VehicleItemMinAggregateInputType = {
   plateNumber?: true
   name?: true
   status?: true
+  odometer?: true
+  lastOilChangeOdometer?: true
+  oilChangeInterval?: true
+  lastServiceOdometer?: true
+  serviceInterval?: true
 }
 
 export type VehicleItemMaxAggregateInputType = {
@@ -69,6 +123,11 @@ export type VehicleItemMaxAggregateInputType = {
   plateNumber?: true
   name?: true
   status?: true
+  odometer?: true
+  lastOilChangeOdometer?: true
+  oilChangeInterval?: true
+  lastServiceOdometer?: true
+  serviceInterval?: true
 }
 
 export type VehicleItemCountAggregateInputType = {
@@ -78,6 +137,11 @@ export type VehicleItemCountAggregateInputType = {
   plateNumber?: true
   name?: true
   status?: true
+  odometer?: true
+  lastOilChangeOdometer?: true
+  oilChangeInterval?: true
+  lastServiceOdometer?: true
+  serviceInterval?: true
   _all?: true
 }
 
@@ -119,6 +183,18 @@ export type VehicleItemAggregateArgs<ExtArgs extends runtime.Types.Extensions.In
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: VehicleItemAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: VehicleItemSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: VehicleItemMinAggregateInputType
@@ -149,6 +225,8 @@ export type VehicleItemGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   _count?: VehicleItemCountAggregateInputType | true
+  _avg?: VehicleItemAvgAggregateInputType
+  _sum?: VehicleItemSumAggregateInputType
   _min?: VehicleItemMinAggregateInputType
   _max?: VehicleItemMaxAggregateInputType
 }
@@ -160,7 +238,14 @@ export type VehicleItemGroupByOutputType = {
   plateNumber: string
   name: string
   status: string
+  odometer: number
+  lastOilChangeOdometer: number
+  oilChangeInterval: number
+  lastServiceOdometer: number
+  serviceInterval: number
   _count: VehicleItemCountAggregateOutputType | null
+  _avg: VehicleItemAvgAggregateOutputType | null
+  _sum: VehicleItemSumAggregateOutputType | null
   _min: VehicleItemMinAggregateOutputType | null
   _max: VehicleItemMaxAggregateOutputType | null
 }
@@ -190,6 +275,11 @@ export type VehicleItemWhereInput = {
   plateNumber?: Prisma.StringFilter<"VehicleItem"> | string
   name?: Prisma.StringFilter<"VehicleItem"> | string
   status?: Prisma.StringFilter<"VehicleItem"> | string
+  odometer?: Prisma.FloatFilter<"VehicleItem"> | number
+  lastOilChangeOdometer?: Prisma.FloatFilter<"VehicleItem"> | number
+  oilChangeInterval?: Prisma.FloatFilter<"VehicleItem"> | number
+  lastServiceOdometer?: Prisma.FloatFilter<"VehicleItem"> | number
+  serviceInterval?: Prisma.FloatFilter<"VehicleItem"> | number
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   logs?: Prisma.VehicleLogListRelationFilter
   needs?: Prisma.VehicleNeedListRelationFilter
@@ -202,6 +292,11 @@ export type VehicleItemOrderByWithRelationInput = {
   plateNumber?: Prisma.SortOrder
   name?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  odometer?: Prisma.SortOrder
+  lastOilChangeOdometer?: Prisma.SortOrder
+  oilChangeInterval?: Prisma.SortOrder
+  lastServiceOdometer?: Prisma.SortOrder
+  serviceInterval?: Prisma.SortOrder
   company?: Prisma.CompanyOrderByWithRelationInput
   logs?: Prisma.VehicleLogOrderByRelationAggregateInput
   needs?: Prisma.VehicleNeedOrderByRelationAggregateInput
@@ -217,6 +312,11 @@ export type VehicleItemWhereUniqueInput = Prisma.AtLeast<{
   plateNumber?: Prisma.StringFilter<"VehicleItem"> | string
   name?: Prisma.StringFilter<"VehicleItem"> | string
   status?: Prisma.StringFilter<"VehicleItem"> | string
+  odometer?: Prisma.FloatFilter<"VehicleItem"> | number
+  lastOilChangeOdometer?: Prisma.FloatFilter<"VehicleItem"> | number
+  oilChangeInterval?: Prisma.FloatFilter<"VehicleItem"> | number
+  lastServiceOdometer?: Prisma.FloatFilter<"VehicleItem"> | number
+  serviceInterval?: Prisma.FloatFilter<"VehicleItem"> | number
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   logs?: Prisma.VehicleLogListRelationFilter
   needs?: Prisma.VehicleNeedListRelationFilter
@@ -229,9 +329,16 @@ export type VehicleItemOrderByWithAggregationInput = {
   plateNumber?: Prisma.SortOrder
   name?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  odometer?: Prisma.SortOrder
+  lastOilChangeOdometer?: Prisma.SortOrder
+  oilChangeInterval?: Prisma.SortOrder
+  lastServiceOdometer?: Prisma.SortOrder
+  serviceInterval?: Prisma.SortOrder
   _count?: Prisma.VehicleItemCountOrderByAggregateInput
+  _avg?: Prisma.VehicleItemAvgOrderByAggregateInput
   _max?: Prisma.VehicleItemMaxOrderByAggregateInput
   _min?: Prisma.VehicleItemMinOrderByAggregateInput
+  _sum?: Prisma.VehicleItemSumOrderByAggregateInput
 }
 
 export type VehicleItemScalarWhereWithAggregatesInput = {
@@ -244,6 +351,11 @@ export type VehicleItemScalarWhereWithAggregatesInput = {
   plateNumber?: Prisma.StringWithAggregatesFilter<"VehicleItem"> | string
   name?: Prisma.StringWithAggregatesFilter<"VehicleItem"> | string
   status?: Prisma.StringWithAggregatesFilter<"VehicleItem"> | string
+  odometer?: Prisma.FloatWithAggregatesFilter<"VehicleItem"> | number
+  lastOilChangeOdometer?: Prisma.FloatWithAggregatesFilter<"VehicleItem"> | number
+  oilChangeInterval?: Prisma.FloatWithAggregatesFilter<"VehicleItem"> | number
+  lastServiceOdometer?: Prisma.FloatWithAggregatesFilter<"VehicleItem"> | number
+  serviceInterval?: Prisma.FloatWithAggregatesFilter<"VehicleItem"> | number
 }
 
 export type VehicleItemCreateInput = {
@@ -252,6 +364,11 @@ export type VehicleItemCreateInput = {
   plateNumber: string
   name: string
   status: string
+  odometer?: number
+  lastOilChangeOdometer?: number
+  oilChangeInterval?: number
+  lastServiceOdometer?: number
+  serviceInterval?: number
   company: Prisma.CompanyCreateNestedOneWithoutVehiclesInput
   logs?: Prisma.VehicleLogCreateNestedManyWithoutVehicleInput
   needs?: Prisma.VehicleNeedCreateNestedManyWithoutVehicleInput
@@ -264,6 +381,11 @@ export type VehicleItemUncheckedCreateInput = {
   plateNumber: string
   name: string
   status: string
+  odometer?: number
+  lastOilChangeOdometer?: number
+  oilChangeInterval?: number
+  lastServiceOdometer?: number
+  serviceInterval?: number
   logs?: Prisma.VehicleLogUncheckedCreateNestedManyWithoutVehicleInput
   needs?: Prisma.VehicleNeedUncheckedCreateNestedManyWithoutVehicleInput
 }
@@ -274,6 +396,11 @@ export type VehicleItemUpdateInput = {
   plateNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  odometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastOilChangeOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  oilChangeInterval?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastServiceOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceInterval?: Prisma.FloatFieldUpdateOperationsInput | number
   company?: Prisma.CompanyUpdateOneRequiredWithoutVehiclesNestedInput
   logs?: Prisma.VehicleLogUpdateManyWithoutVehicleNestedInput
   needs?: Prisma.VehicleNeedUpdateManyWithoutVehicleNestedInput
@@ -286,6 +413,11 @@ export type VehicleItemUncheckedUpdateInput = {
   plateNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  odometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastOilChangeOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  oilChangeInterval?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastServiceOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceInterval?: Prisma.FloatFieldUpdateOperationsInput | number
   logs?: Prisma.VehicleLogUncheckedUpdateManyWithoutVehicleNestedInput
   needs?: Prisma.VehicleNeedUncheckedUpdateManyWithoutVehicleNestedInput
 }
@@ -297,6 +429,11 @@ export type VehicleItemCreateManyInput = {
   plateNumber: string
   name: string
   status: string
+  odometer?: number
+  lastOilChangeOdometer?: number
+  oilChangeInterval?: number
+  lastServiceOdometer?: number
+  serviceInterval?: number
 }
 
 export type VehicleItemUpdateManyMutationInput = {
@@ -305,6 +442,11 @@ export type VehicleItemUpdateManyMutationInput = {
   plateNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  odometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastOilChangeOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  oilChangeInterval?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastServiceOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceInterval?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
 export type VehicleItemUncheckedUpdateManyInput = {
@@ -314,6 +456,11 @@ export type VehicleItemUncheckedUpdateManyInput = {
   plateNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  odometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastOilChangeOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  oilChangeInterval?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastServiceOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceInterval?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
 export type VehicleItemListRelationFilter = {
@@ -333,6 +480,19 @@ export type VehicleItemCountOrderByAggregateInput = {
   plateNumber?: Prisma.SortOrder
   name?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  odometer?: Prisma.SortOrder
+  lastOilChangeOdometer?: Prisma.SortOrder
+  oilChangeInterval?: Prisma.SortOrder
+  lastServiceOdometer?: Prisma.SortOrder
+  serviceInterval?: Prisma.SortOrder
+}
+
+export type VehicleItemAvgOrderByAggregateInput = {
+  odometer?: Prisma.SortOrder
+  lastOilChangeOdometer?: Prisma.SortOrder
+  oilChangeInterval?: Prisma.SortOrder
+  lastServiceOdometer?: Prisma.SortOrder
+  serviceInterval?: Prisma.SortOrder
 }
 
 export type VehicleItemMaxOrderByAggregateInput = {
@@ -342,6 +502,11 @@ export type VehicleItemMaxOrderByAggregateInput = {
   plateNumber?: Prisma.SortOrder
   name?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  odometer?: Prisma.SortOrder
+  lastOilChangeOdometer?: Prisma.SortOrder
+  oilChangeInterval?: Prisma.SortOrder
+  lastServiceOdometer?: Prisma.SortOrder
+  serviceInterval?: Prisma.SortOrder
 }
 
 export type VehicleItemMinOrderByAggregateInput = {
@@ -351,6 +516,19 @@ export type VehicleItemMinOrderByAggregateInput = {
   plateNumber?: Prisma.SortOrder
   name?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  odometer?: Prisma.SortOrder
+  lastOilChangeOdometer?: Prisma.SortOrder
+  oilChangeInterval?: Prisma.SortOrder
+  lastServiceOdometer?: Prisma.SortOrder
+  serviceInterval?: Prisma.SortOrder
+}
+
+export type VehicleItemSumOrderByAggregateInput = {
+  odometer?: Prisma.SortOrder
+  lastOilChangeOdometer?: Prisma.SortOrder
+  oilChangeInterval?: Prisma.SortOrder
+  lastServiceOdometer?: Prisma.SortOrder
+  serviceInterval?: Prisma.SortOrder
 }
 
 export type VehicleItemScalarRelationFilter = {
@@ -434,6 +612,11 @@ export type VehicleItemCreateWithoutCompanyInput = {
   plateNumber: string
   name: string
   status: string
+  odometer?: number
+  lastOilChangeOdometer?: number
+  oilChangeInterval?: number
+  lastServiceOdometer?: number
+  serviceInterval?: number
   logs?: Prisma.VehicleLogCreateNestedManyWithoutVehicleInput
   needs?: Prisma.VehicleNeedCreateNestedManyWithoutVehicleInput
 }
@@ -444,6 +627,11 @@ export type VehicleItemUncheckedCreateWithoutCompanyInput = {
   plateNumber: string
   name: string
   status: string
+  odometer?: number
+  lastOilChangeOdometer?: number
+  oilChangeInterval?: number
+  lastServiceOdometer?: number
+  serviceInterval?: number
   logs?: Prisma.VehicleLogUncheckedCreateNestedManyWithoutVehicleInput
   needs?: Prisma.VehicleNeedUncheckedCreateNestedManyWithoutVehicleInput
 }
@@ -455,7 +643,6 @@ export type VehicleItemCreateOrConnectWithoutCompanyInput = {
 
 export type VehicleItemCreateManyCompanyInputEnvelope = {
   data: Prisma.VehicleItemCreateManyCompanyInput | Prisma.VehicleItemCreateManyCompanyInput[]
-  skipDuplicates?: boolean
 }
 
 export type VehicleItemUpsertWithWhereUniqueWithoutCompanyInput = {
@@ -484,6 +671,11 @@ export type VehicleItemScalarWhereInput = {
   plateNumber?: Prisma.StringFilter<"VehicleItem"> | string
   name?: Prisma.StringFilter<"VehicleItem"> | string
   status?: Prisma.StringFilter<"VehicleItem"> | string
+  odometer?: Prisma.FloatFilter<"VehicleItem"> | number
+  lastOilChangeOdometer?: Prisma.FloatFilter<"VehicleItem"> | number
+  oilChangeInterval?: Prisma.FloatFilter<"VehicleItem"> | number
+  lastServiceOdometer?: Prisma.FloatFilter<"VehicleItem"> | number
+  serviceInterval?: Prisma.FloatFilter<"VehicleItem"> | number
 }
 
 export type VehicleItemCreateWithoutLogsInput = {
@@ -492,6 +684,11 @@ export type VehicleItemCreateWithoutLogsInput = {
   plateNumber: string
   name: string
   status: string
+  odometer?: number
+  lastOilChangeOdometer?: number
+  oilChangeInterval?: number
+  lastServiceOdometer?: number
+  serviceInterval?: number
   company: Prisma.CompanyCreateNestedOneWithoutVehiclesInput
   needs?: Prisma.VehicleNeedCreateNestedManyWithoutVehicleInput
 }
@@ -503,6 +700,11 @@ export type VehicleItemUncheckedCreateWithoutLogsInput = {
   plateNumber: string
   name: string
   status: string
+  odometer?: number
+  lastOilChangeOdometer?: number
+  oilChangeInterval?: number
+  lastServiceOdometer?: number
+  serviceInterval?: number
   needs?: Prisma.VehicleNeedUncheckedCreateNestedManyWithoutVehicleInput
 }
 
@@ -528,6 +730,11 @@ export type VehicleItemUpdateWithoutLogsInput = {
   plateNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  odometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastOilChangeOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  oilChangeInterval?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastServiceOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceInterval?: Prisma.FloatFieldUpdateOperationsInput | number
   company?: Prisma.CompanyUpdateOneRequiredWithoutVehiclesNestedInput
   needs?: Prisma.VehicleNeedUpdateManyWithoutVehicleNestedInput
 }
@@ -539,6 +746,11 @@ export type VehicleItemUncheckedUpdateWithoutLogsInput = {
   plateNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  odometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastOilChangeOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  oilChangeInterval?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastServiceOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceInterval?: Prisma.FloatFieldUpdateOperationsInput | number
   needs?: Prisma.VehicleNeedUncheckedUpdateManyWithoutVehicleNestedInput
 }
 
@@ -548,6 +760,11 @@ export type VehicleItemCreateWithoutNeedsInput = {
   plateNumber: string
   name: string
   status: string
+  odometer?: number
+  lastOilChangeOdometer?: number
+  oilChangeInterval?: number
+  lastServiceOdometer?: number
+  serviceInterval?: number
   company: Prisma.CompanyCreateNestedOneWithoutVehiclesInput
   logs?: Prisma.VehicleLogCreateNestedManyWithoutVehicleInput
 }
@@ -559,6 +776,11 @@ export type VehicleItemUncheckedCreateWithoutNeedsInput = {
   plateNumber: string
   name: string
   status: string
+  odometer?: number
+  lastOilChangeOdometer?: number
+  oilChangeInterval?: number
+  lastServiceOdometer?: number
+  serviceInterval?: number
   logs?: Prisma.VehicleLogUncheckedCreateNestedManyWithoutVehicleInput
 }
 
@@ -584,6 +806,11 @@ export type VehicleItemUpdateWithoutNeedsInput = {
   plateNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  odometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastOilChangeOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  oilChangeInterval?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastServiceOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceInterval?: Prisma.FloatFieldUpdateOperationsInput | number
   company?: Prisma.CompanyUpdateOneRequiredWithoutVehiclesNestedInput
   logs?: Prisma.VehicleLogUpdateManyWithoutVehicleNestedInput
 }
@@ -595,6 +822,11 @@ export type VehicleItemUncheckedUpdateWithoutNeedsInput = {
   plateNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  odometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastOilChangeOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  oilChangeInterval?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastServiceOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceInterval?: Prisma.FloatFieldUpdateOperationsInput | number
   logs?: Prisma.VehicleLogUncheckedUpdateManyWithoutVehicleNestedInput
 }
 
@@ -604,6 +836,11 @@ export type VehicleItemCreateManyCompanyInput = {
   plateNumber: string
   name: string
   status: string
+  odometer?: number
+  lastOilChangeOdometer?: number
+  oilChangeInterval?: number
+  lastServiceOdometer?: number
+  serviceInterval?: number
 }
 
 export type VehicleItemUpdateWithoutCompanyInput = {
@@ -612,6 +849,11 @@ export type VehicleItemUpdateWithoutCompanyInput = {
   plateNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  odometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastOilChangeOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  oilChangeInterval?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastServiceOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceInterval?: Prisma.FloatFieldUpdateOperationsInput | number
   logs?: Prisma.VehicleLogUpdateManyWithoutVehicleNestedInput
   needs?: Prisma.VehicleNeedUpdateManyWithoutVehicleNestedInput
 }
@@ -622,6 +864,11 @@ export type VehicleItemUncheckedUpdateWithoutCompanyInput = {
   plateNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  odometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastOilChangeOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  oilChangeInterval?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastServiceOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceInterval?: Prisma.FloatFieldUpdateOperationsInput | number
   logs?: Prisma.VehicleLogUncheckedUpdateManyWithoutVehicleNestedInput
   needs?: Prisma.VehicleNeedUncheckedUpdateManyWithoutVehicleNestedInput
 }
@@ -632,6 +879,11 @@ export type VehicleItemUncheckedUpdateManyWithoutCompanyInput = {
   plateNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  odometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastOilChangeOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  oilChangeInterval?: Prisma.FloatFieldUpdateOperationsInput | number
+  lastServiceOdometer?: Prisma.FloatFieldUpdateOperationsInput | number
+  serviceInterval?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
 
@@ -681,6 +933,11 @@ export type VehicleItemSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   plateNumber?: boolean
   name?: boolean
   status?: boolean
+  odometer?: boolean
+  lastOilChangeOdometer?: boolean
+  oilChangeInterval?: boolean
+  lastServiceOdometer?: boolean
+  serviceInterval?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   logs?: boolean | Prisma.VehicleItem$logsArgs<ExtArgs>
   needs?: boolean | Prisma.VehicleItem$needsArgs<ExtArgs>
@@ -694,6 +951,11 @@ export type VehicleItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   plateNumber?: boolean
   name?: boolean
   status?: boolean
+  odometer?: boolean
+  lastOilChangeOdometer?: boolean
+  oilChangeInterval?: boolean
+  lastServiceOdometer?: boolean
+  serviceInterval?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["vehicleItem"]>
 
@@ -704,6 +966,11 @@ export type VehicleItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   plateNumber?: boolean
   name?: boolean
   status?: boolean
+  odometer?: boolean
+  lastOilChangeOdometer?: boolean
+  oilChangeInterval?: boolean
+  lastServiceOdometer?: boolean
+  serviceInterval?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["vehicleItem"]>
 
@@ -714,9 +981,14 @@ export type VehicleItemSelectScalar = {
   plateNumber?: boolean
   name?: boolean
   status?: boolean
+  odometer?: boolean
+  lastOilChangeOdometer?: boolean
+  oilChangeInterval?: boolean
+  lastServiceOdometer?: boolean
+  serviceInterval?: boolean
 }
 
-export type VehicleItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "adminId" | "companyId" | "plateNumber" | "name" | "status", ExtArgs["result"]["vehicleItem"]>
+export type VehicleItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "adminId" | "companyId" | "plateNumber" | "name" | "status" | "odometer" | "lastOilChangeOdometer" | "oilChangeInterval" | "lastServiceOdometer" | "serviceInterval", ExtArgs["result"]["vehicleItem"]>
 export type VehicleItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   logs?: boolean | Prisma.VehicleItem$logsArgs<ExtArgs>
@@ -744,6 +1016,11 @@ export type $VehicleItemPayload<ExtArgs extends runtime.Types.Extensions.Interna
     plateNumber: string
     name: string
     status: string
+    odometer: number
+    lastOilChangeOdometer: number
+    oilChangeInterval: number
+    lastServiceOdometer: number
+    serviceInterval: number
   }, ExtArgs["result"]["vehicleItem"]>
   composites: {}
 }
@@ -1176,6 +1453,11 @@ export interface VehicleItemFieldRefs {
   readonly plateNumber: Prisma.FieldRef<"VehicleItem", 'String'>
   readonly name: Prisma.FieldRef<"VehicleItem", 'String'>
   readonly status: Prisma.FieldRef<"VehicleItem", 'String'>
+  readonly odometer: Prisma.FieldRef<"VehicleItem", 'Float'>
+  readonly lastOilChangeOdometer: Prisma.FieldRef<"VehicleItem", 'Float'>
+  readonly oilChangeInterval: Prisma.FieldRef<"VehicleItem", 'Float'>
+  readonly lastServiceOdometer: Prisma.FieldRef<"VehicleItem", 'Float'>
+  readonly serviceInterval: Prisma.FieldRef<"VehicleItem", 'Float'>
 }
     
 
@@ -1410,7 +1692,6 @@ export type VehicleItemCreateManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * The data used to create many VehicleItems.
    */
   data: Prisma.VehicleItemCreateManyInput | Prisma.VehicleItemCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1429,7 +1710,6 @@ export type VehicleItemCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ext
    * The data used to create many VehicleItems.
    */
   data: Prisma.VehicleItemCreateManyInput | Prisma.VehicleItemCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

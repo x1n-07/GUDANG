@@ -2,12 +2,22 @@ import React from 'react';
 import { useAppContext } from '../../store';
 import { Package, Wrench, Truck, AlertTriangle, Users, Info } from 'lucide-react';
 
-export const DashboardView: React.FC = () => {
+interface DashboardViewProps {
+  onTabChange: (tab: string) => void;
+}
+
+export const DashboardView: React.FC<DashboardViewProps> = ({ onTabChange }) => {
   const { goods, equipment, vehicles, technicians, equipmentLogs, vehicleLogs } = useAppContext();
 
   const lowStockGoods = goods.filter(g => g.stock <= g.minStock);
   const brokenEquipment = equipment.filter(e => e.condition !== 'Baik');
   const activeVehicles = vehicles.filter(v => v.status === 'Sedang Digunakan' || v.status === 'Perbaikan');
+  
+  // Service alerts
+  const vehiclesDueForService = vehicles.filter(v => 
+    (v.odometer - v.lastOilChangeOdometer >= v.oilChangeInterval) || 
+    (v.odometer - v.lastServiceOdometer >= v.serviceInterval)
+  );
 
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
@@ -18,7 +28,11 @@ export const DashboardView: React.FC = () => {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
+        <button
+          onClick={() => onTabChange('goods')}
+          className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4 hover:border-blue-300 hover:shadow-md transition-all cursor-pointer"
+          aria-label="Lihat Stok Barang"
+        >
           <div className="p-3 bg-blue-50 text-blue-600 rounded-lg">
             <Package size={24} />
           </div>
@@ -26,9 +40,13 @@ export const DashboardView: React.FC = () => {
             <p className="text-sm font-medium text-slate-500">Total Barang</p>
             <p className="text-2xl font-bold text-slate-800">{goods.length}</p>
           </div>
-        </div>
+        </button>
         
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
+        <button
+          onClick={() => onTabChange('equipment')}
+          className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4 hover:border-indigo-300 hover:shadow-md transition-all cursor-pointer"
+          aria-label="Lihat Inventaris Alat"
+        >
           <div className="p-3 bg-indigo-50 text-indigo-600 rounded-lg">
             <Wrench size={24} />
           </div>
@@ -36,9 +54,13 @@ export const DashboardView: React.FC = () => {
             <p className="text-sm font-medium text-slate-500">Total Alat</p>
             <p className="text-2xl font-bold text-slate-800">{equipment.length}</p>
           </div>
-        </div>
+        </button>
 
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
+        <button
+          onClick={() => onTabChange('vehicles')}
+          className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4 hover:border-amber-300 hover:shadow-md transition-all cursor-pointer"
+          aria-label="Lihat Kendaraan"
+        >
           <div className="p-3 bg-amber-50 text-amber-600 rounded-lg">
             <Truck size={24} />
           </div>
@@ -46,9 +68,13 @@ export const DashboardView: React.FC = () => {
             <p className="text-sm font-medium text-slate-500">Total Kendaraan</p>
             <p className="text-2xl font-bold text-slate-800">{vehicles.length}</p>
           </div>
-        </div>
+        </button>
 
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
+        <button
+          onClick={() => onTabChange('technicians')}
+          className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4 hover:border-purple-300 hover:shadow-md transition-all cursor-pointer"
+          aria-label="Lihat Daftar Teknisi"
+        >
           <div className="p-3 bg-purple-50 text-purple-600 rounded-lg">
             <Users size={24} />
           </div>
@@ -56,7 +82,7 @@ export const DashboardView: React.FC = () => {
             <p className="text-sm font-medium text-slate-500">Total Teknisi</p>
             <p className="text-2xl font-bold text-slate-800">{technicians.length}</p>
           </div>
-        </div>
+        </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -120,20 +146,20 @@ export const DashboardView: React.FC = () => {
             <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
               <div className="p-4 border-b border-slate-100 bg-slate-50 flex items-center">
                 <Truck size={18} className="text-amber-600 mr-2" /> 
-                <h3 className="font-bold text-slate-800">Status Kendaraan</h3>
+                <h3 className="font-bold text-slate-800">Servis & Oli Kendaraan</h3>
               </div>
               <div className="divide-y divide-slate-100 max-h-[300px] overflow-auto">
-                {activeVehicles.map(v => (
-                  <div key={v.id} className="p-4 hover:bg-slate-50 transition-colors">
-                    <p className="font-medium text-slate-800">{v.name}</p>
-                    <p className="text-xs text-slate-500 font-mono">{v.plateNumber}</p>
-                    <span className={`text-xs font-medium w-fit px-2 py-0.5 rounded mt-2 inline-block ${v.status === 'Sedang Digunakan' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'}`}>
-                      {v.status}
-                    </span>
+                {vehiclesDueForService.map(v => (
+                  <div key={v.id} className="p-4 hover:bg-slate-50 transition-colors flex justify-between items-center">
+                    <div>
+                      <p className="font-medium text-slate-800">{v.name}</p>
+                      <p className="text-xs text-slate-500 font-mono">{v.plateNumber}</p>
+                    </div>
+                    <span className="text-xs font-medium bg-red-100 text-red-700 px-2 py-1 rounded">Perlu Perhatian</span>
                   </div>
                 ))}
-                {activeVehicles.length === 0 && (
-                  <div className="p-6 text-center text-slate-500 text-sm">Semua kendaraan tersedia.</div>
+                {vehiclesDueForService.length === 0 && (
+                  <div className="p-6 text-center text-slate-500 text-sm">Semua kendaraan dalam kondisi prima.</div>
                 )}
               </div>
             </div>

@@ -26,14 +26,42 @@ router.get('/', async (req: AuthRequest, res) => {
 
 router.post('/', async (req: AuthRequest, res) => {
   try {
-    const { name, plateNumber } = req.body;
+    const { name, plateNumber, odometer, oilChangeInterval, serviceInterval, companyId } = req.body;
+    const targetCompanyId = req.user?.role === 'superadmin' 
+      ? (companyId || req.user?.companyId) 
+      : req.user?.companyId;
+
+    if (!targetCompanyId) {
+      res.status(400).json({ message: 'Company ID harus diisi' });
+      return;
+    }
+    if (!name || !plateNumber) {
+      res.status(400).json({ message: 'Nama dan plat nomor wajib diisi' });
+      return;
+    }
+
+    // Prevent duplicate plate number within the same company
+    const duplicate = await prisma.vehicleItem.findFirst({
+      where: { companyId: targetCompanyId, plateNumber: plateNumber.trim().toUpperCase() },
+    });
+    if (duplicate) {
+      res.status(400).json({ message: `Kendaraan dengan plat ${plateNumber} sudah terdaftar` });
+      return;
+    }
+
+    const initialOdometer = Math.max(0, Number(odometer) || 0);
     const item = await prisma.vehicleItem.create({
       data: {
         adminId: req.user!.id,
-        companyId: req.user!.companyId || '',
-        name,
-        plateNumber,
+        companyId: targetCompanyId,
+        name: name.trim(),
+        plateNumber: plateNumber.trim().toUpperCase(),
         status: 'Tersedia',
+        odometer: initialOdometer,
+        lastOilChangeOdometer: initialOdometer,
+        oilChangeInterval: Math.max(1, Number(oilChangeInterval) || 5000),
+        lastServiceOdometer: initialOdometer,
+        serviceInterval: Math.max(1, Number(serviceInterval) || 10000),
       },
     });
     res.status(201).json(item);
@@ -45,11 +73,16 @@ router.post('/', async (req: AuthRequest, res) => {
 
 router.patch('/:id/status', async (req: AuthRequest, res) => {
   try {
-    const item = await prisma.vehicleItem.update({
+    const item = await prisma.vehicleItem.findFirst({ where: { id: req.params.id, ...tenantWhere(req) } });
+    if (!item) {
+      res.status(404).json({ message: 'Not found' });
+      return;
+    }
+    const updated = await prisma.vehicleItem.update({
       where: { id: req.params.id },
       data: { status: req.body.status },
     });
-    res.json(item);
+    res.json(updated);
   } catch (error) {
     console.error('Error updating vehicle status:', error);
     res.status(500).json({ message: 'Failed to update vehicle status' });
@@ -87,11 +120,31 @@ router.get('/logs', async (req: AuthRequest, res) => {
 
 router.post('/logs', async (req: AuthRequest, res) => {
   try {
-    const { vehicleId, driver, purpose } = req.body;
+    const { vehicleId, driver, purpose, startOdometer } = req.body;
     const result = await prisma.$transaction(async (tx) => {
       const v = await tx.vehicleItem.findUnique({ where: { id: vehicleId } });
       if (!v) throw new Error('Vehicle not found');
-      await tx.vehicleItem.update({ where: { id: vehicleId }, data: { status: 'Sedang Digunakan' } });
+
+      // Validate vehicle can be used
+      if (v.status !== 'Tersedia') {
+        throw new Error(`Kendaraan tidak dapat digunakan. Status saat ini: ${v.status}`);
+      }
+
+      // Odometer must be >= current odometer
+      const startOdo = Math.max(0, Number(startOdometer) || v.odometer);
+      if (startOdo < v.odometer) {
+        throw new Error(`Odometer awal (${startOdo}) tidak boleh lebih kecil dari odometer terakhir kendaraan (${v.odometer})`);
+      }
+
+      // Update vehicle status and odometer
+      await tx.vehicleItem.update({ 
+        where: { id: vehicleId }, 
+        data: { 
+          status: 'Sedang Digunakan',
+          odometer: startOdo
+        } 
+      });
+
       return tx.vehicleLog.create({
         data: {
           adminId: req.user!.id,
@@ -100,34 +153,53 @@ router.post('/logs', async (req: AuthRequest, res) => {
           driver,
           purpose,
           status: 'JALAN',
+          startOdometer: startOdo,
         },
       });
     });
     res.status(201).json(result);
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating vehicle log:', error);
-    res.status(500).json({ message: 'Failed to create vehicle log' });
+    res.status(400).json({ message: error.message || 'Failed to create vehicle log' });
   }
 });
 
 router.patch('/logs/:logId/finish', async (req: AuthRequest, res) => {
   try {
+    const { endOdometer } = req.body;
     const log = await prisma.vehicleLog.findUnique({ where: { id: req.params.logId } });
     if (!log) {
       res.status(404).json({ message: 'Log not found' });
       return;
     }
     const result = await prisma.$transaction(async (tx) => {
-      await tx.vehicleItem.update({ where: { id: log.vehicleId }, data: { status: 'Tersedia' } });
+      // Calculate distance and ensure odometer progression
+      if (endOdometer !== undefined && Number(endOdometer) < log.startOdometer) {
+        throw new Error(`Odometer akhir (${endOdometer}) tidak boleh lebih kecil dari awalan ${log.startOdometer}`);
+      }
+
+      // Update vehicle status and final odometer
+      await tx.vehicleItem.update({ 
+        where: { id: log.vehicleId }, 
+        data: { 
+          status: 'Tersedia',
+          odometer: endOdometer !== undefined ? Math.max(log.startOdometer, Number(endOdometer)) : undefined
+        } 
+      });
+
       return tx.vehicleLog.update({
         where: { id: req.params.logId },
-        data: { status: 'SELESAI', endDate: new Date() },
+        data: { 
+          status: 'SELESAI', 
+          endDate: new Date(),
+          endOdometer: endOdometer !== undefined ? Math.max(log.startOdometer, Number(endOdometer)) : undefined
+        },
       });
     });
     res.json(result);
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error finishing trip:', error);
-    res.status(500).json({ message: 'Failed to finish trip' });
+    res.status(400).json({ message: error.message || 'Failed to finish trip' });
   }
 });
 
@@ -153,21 +225,43 @@ router.post('/needs', async (req: AuthRequest, res) => {
       res.status(404).json({ message: 'Vehicle not found' });
       return;
     }
-    const need = await prisma.vehicleNeed.create({
-      data: {
-        adminId: req.user!.id,
-        companyId: v.companyId,
-        vehicleId,
-        type,
-        description,
-        cost: Number(cost) || 0,
-        pic,
-      },
+
+    const result = await prisma.$transaction(async (tx) => {
+      // When oil change is recorded, reset the oil change baseline to current odometer
+      // Handles both 'Ganti Oli' (frontend) and 'Servis' (backend convention)
+      const oilTypes = ['Ganti Oli', 'Servis', 'Oli', 'Perbaikan'];
+      if (oilTypes.includes(type)) {
+        await tx.vehicleItem.update({
+          where: { id: vehicleId },
+          data: { lastOilChangeOdometer: v.odometer },
+        });
+      }
+
+      // When service is recorded, reset the service baseline and mark vehicle under repair
+      if (type === 'Servis' || type === 'Perbaikan') {
+        await tx.vehicleItem.update({
+          where: { id: vehicleId },
+          data: { lastServiceOdometer: v.odometer, status: 'Perbaikan' },
+        });
+      }
+
+      return tx.vehicleNeed.create({
+        data: {
+          adminId: req.user!.id,
+          companyId: v.companyId,
+          vehicleId,
+          type,
+          description,
+          cost: Number(cost) || 0,
+          pic,
+        },
+      });
     });
-    res.status(201).json(need);
-  } catch (error) {
+
+    res.status(201).json(result);
+  } catch (error: any) {
     console.error('Error creating vehicle need:', error);
-    res.status(500).json({ message: 'Failed to create vehicle need' });
+    res.status(400).json({ message: error.message || 'Failed to create vehicle need' });
   }
 });
 

@@ -538,7 +538,6 @@ export type GoodsItemCreateOrConnectWithoutCompanyInput = {
 
 export type GoodsItemCreateManyCompanyInputEnvelope = {
   data: Prisma.GoodsItemCreateManyCompanyInput | Prisma.GoodsItemCreateManyCompanyInput[]
-  skipDuplicates?: boolean
 }
 
 export type GoodsItemUpsertWithWhereUniqueWithoutCompanyInput = {
@@ -1448,7 +1447,6 @@ export type GoodsItemCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * The data used to create many GoodsItems.
    */
   data: Prisma.GoodsItemCreateManyInput | Prisma.GoodsItemCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1467,7 +1465,6 @@ export type GoodsItemCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exten
    * The data used to create many GoodsItems.
    */
   data: Prisma.GoodsItemCreateManyInput | Prisma.GoodsItemCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

@@ -8,3 +8,10 @@ coverage/
 !.env.example
 
 /src/generated/prisma
+
+# SQLite database files
+database/*.db
+database/*.db-journal
+database/*.db-wal
+database/*.db-shm
+

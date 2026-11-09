@@ -17,31 +17,58 @@ export const VehicleView: React.FC = () => {
   // Modals
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isTripModalOpen, setIsTripModalOpen] = useState(false);
+  const [isFinishModalOpen, setIsFinishModalOpen] = useState(false);
   const [isNeedModalOpen, setIsNeedModalOpen] = useState(false);
   const [selectedVehicleId, setSelectedVehicleId] = useState('');
+  const [selectedLogId, setSelectedLogId] = useState('');
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
   
   // Forms
-  const [newVehicle, setNewVehicle] = useState({ name: '', plateNumber: '' });
-  const [tripForm, setTripForm] = useState({ driver: '', purpose: '' });
+  const [newVehicle, setNewVehicle] = useState({ name: '', plateNumber: '', odometer: 0, serviceInterval: 10000, oilChangeInterval: 5000 });
+  const [tripForm, setTripForm] = useState({ driver: '', purpose: '', startOdometer: '' });
   const [needForm, setNeedForm] = useState({ type: 'BBM' as VehicleNeedType, description: '', cost: 0, pic: '' });
+  const [finishForm, setFinishForm] = useState({ endOdometer: '' });
 
   const handleAddVehicle = (e: React.FormEvent) => {
     e.preventDefault();
-    addVehicleItem(newVehicle);
+    addVehicleItem({ ...newVehicle, name: newVehicle.name.trim() });
     setIsAddModalOpen(false);
-    setNewVehicle({ name: '', plateNumber: '' });
+    setNewVehicle({ name: '', plateNumber: '', odometer: 0, serviceInterval: 10000, oilChangeInterval: 5000 });
   };
 
   const handleStartTrip = (e: React.FormEvent) => {
     e.preventDefault();
+    const selectedVehicle = vehicles.find(v => v.id === selectedVehicleId);
+    if (!selectedVehicle) return;
+
+    const startOdo = parseFloat(tripForm.startOdometer);
+    if (isNaN(startOdo) || startOdo < selectedVehicle.odometer) {
+      alert(`Odometer awal tidak boleh lebih kecil dari odometer terakhir kendaraan (${selectedVehicle.odometer} km).`);
+      return;
+    }
+
     addVehicleLog({
       vehicleId: selectedVehicleId,
       driver: tripForm.driver,
       purpose: tripForm.purpose,
+      startOdometer: startOdo,
     });
     setIsTripModalOpen(false);
-    setTripForm({ driver: '', purpose: '' });
+    setTripForm({ driver: '', purpose: '', startOdometer: '' });
+  };
+
+  const handleFinishTrip = (logId: string, currentVehicleOdometer: number) => {
+    const endOdo = parseFloat(finishForm.endOdometer);
+    const trip = vehicleLogs.find(l => l.id === logId);
+
+    if (isNaN(endOdo) || endOdo < (trip?.startOdometer || 0) || endOdo < currentVehicleOdometer) {
+      alert(`Odometer akhir tidak boleh lebih kecil dari odometer awal perjalanan (${trip?.startOdometer || 0} km) atau odometer terakhir kendaraan (${currentVehicleOdometer} km).`);
+      return;
+    }
+
+    finishVehicleTrip(logId, endOdo);
+    setIsFinishModalOpen(false);
+    setFinishForm({ endOdometer: '' });
   };
 
   const handleAddNeed = (e: React.FormEvent) => {
@@ -53,12 +80,6 @@ export const VehicleView: React.FC = () => {
       cost: Number(needForm.cost),
       pic: needForm.pic
     });
-    
-    // Auto update status if need is service
-    if (needForm.type === 'Servis') {
-      updateVehicleStatus(selectedVehicleId, 'Perbaikan');
-    }
-    
     setIsNeedModalOpen(false);
     setNeedForm({ type: 'BBM', description: '', cost: 0, pic: '' });
   };
@@ -110,7 +131,11 @@ export const VehicleView: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {vehicles.map(vehicle => {
             const activeTrip = vehicleLogs.find(l => l.vehicleId === vehicle.id && l.status === 'JALAN');
-            
+            const kmSinceOil = vehicle.odometer - vehicle.lastOilChangeOdometer;
+            const kmSinceService = vehicle.odometer - vehicle.lastServiceOdometer;
+            const oilDue = kmSinceOil >= vehicle.oilChangeInterval;
+            const serviceDue = kmSinceService >= vehicle.serviceInterval;
+
             return (
               <div key={vehicle.id} className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
                 <div className="p-5 flex-1">
@@ -135,7 +160,7 @@ export const VehicleView: React.FC = () => {
                     )}
                   </div>
                   
-                  <div className="mt-4">
+                  <div className="flex flex-wrap gap-2 mt-4">
                     <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold border ${
                       vehicle.status === 'Tersedia' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 
                       vehicle.status === 'Sedang Digunakan' ? 'bg-blue-50 text-blue-700 border-blue-200' :
@@ -146,12 +171,33 @@ export const VehicleView: React.FC = () => {
                       {vehicle.status === 'Perbaikan' && <Wrench size={12} className="mr-1.5" />}
                       {vehicle.status}
                     </span>
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold border bg-slate-50 text-slate-700 border-slate-200">
+                      {vehicle.odometer.toLocaleString('id-ID')} km
+                    </span>
                   </div>
+
+                  {(oilDue || serviceDue) && (
+                    <div className="mt-4 space-y-2">
+                      {oilDue && (
+                        <div className="flex items-center p-2 bg-red-50 border border-red-100 rounded-lg text-red-700 text-xs animate-pulse">
+                          <AlertTriangle size={14} className="mr-2 flex-shrink-0" />
+                          <span>Waktunya Ganti Oli! ({kmSinceOil} km sejak ganti terakhir)</span>
+                        </div>
+                      )}
+                      {serviceDue && (
+                        <div className="flex items-center p-2 bg-amber-50 border border-amber-100 rounded-lg text-amber-700 text-xs">
+                          <AlertTriangle size={14} className="mr-2 flex-shrink-0" />
+                          <span>Waktunya Servis Berkala! ({kmSinceService} km sejak servis terakhir)</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   {activeTrip && (
                     <div className="mt-4 p-3 bg-slate-50 rounded-lg border border-slate-100 text-sm">
                       <div className="flex items-center text-slate-700 mb-1">
                         <span className="font-medium">{activeTrip.driver}</span>
+                        <span className="ml-auto text-[10px] text-slate-400">Mulai: {activeTrip.startOdometer} km</span>
                       </div>
                       <div className="flex items-start text-slate-500 text-xs">
                         <MapPin size={12} className="mr-1 mt-0.5 flex-shrink-0" />
@@ -166,7 +212,7 @@ export const VehicleView: React.FC = () => {
                     canManageVehicles ? (
                       <>
                         <button 
-                          onClick={() => { setSelectedVehicleId(vehicle.id); setIsTripModalOpen(true); }}
+                          onClick={() => { setSelectedVehicleId(vehicle.id); setTripForm(f => ({ ...f, startOdometer: vehicle.odometer.toString() })); setIsTripModalOpen(true); }}
                           className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors flex justify-center items-center"
                         >
                           <Navigation size={14} className="mr-1.5" /> Pakai
@@ -184,7 +230,14 @@ export const VehicleView: React.FC = () => {
                   )}
                   {vehicle.status === 'Sedang Digunakan' && canManageVehicles && (
                     <button 
-                      onClick={() => activeTrip && finishVehicleTrip(activeTrip.id)}
+                      onClick={() => { 
+                        if (activeTrip) {
+                          setSelectedVehicleId(vehicle.id); 
+                          setSelectedLogId(activeTrip.id);
+                          setFinishForm({ endOdometer: vehicle.odometer.toString() });
+                          setIsFinishModalOpen(true);
+                        }
+                      }}
                       className="col-span-2 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium rounded-lg transition-colors flex justify-center items-center"
                     >
                       <CheckCircle size={14} className="mr-1.5" /> Selesaikan Perjalanan
@@ -213,43 +266,56 @@ export const VehicleView: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse whitespace-nowrap">
               <thead>
-              <tr className="bg-slate-50 text-slate-600 border-b border-slate-200">
-                <th className="p-4 font-semibold text-sm">Kendaraan</th>
-                <th className="p-4 font-semibold text-sm">Supir / Teknisi</th>
-                <th className="p-4 font-semibold text-sm">Tujuan & Keperluan</th>
-                <th className="p-4 font-semibold text-sm">Berangkat</th>
-                <th className="p-4 font-semibold text-sm">Kembali</th>
-                <th className="p-4 font-semibold text-sm">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {vehicleLogs.map(log => {
-                const vehicle = vehicles.find(v => v.id === log.vehicleId);
-                return (
-                  <tr key={log.id} className="hover:bg-slate-50 transition-colors">
-                    <td className="p-4">
-                      <p className="font-medium text-slate-800">{vehicle?.name}</p>
-                      <p className="text-xs font-mono text-slate-500">{vehicle?.plateNumber}</p>
-                    </td>
-                    <td className="p-4 font-medium text-slate-700">{log.driver}</td>
-                    <td className="p-4 text-sm text-slate-600 max-w-[200px] truncate" title={log.purpose}>{log.purpose}</td>
-                    <td className="p-4 text-sm text-slate-600">{new Date(log.startDate).toLocaleString('id-ID')}</td>
-                    <td className="p-4 text-sm text-slate-600">{log.endDate ? new Date(log.endDate).toLocaleString('id-ID') : '-'}</td>
-                    <td className="p-4">
-                      {log.status === 'JALAN' ? (
-                        <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">Berjalan</span>
-                      ) : (
-                        <span className="px-2 py-1 text-xs font-medium bg-emerald-100 text-emerald-700 rounded-full">Selesai</span>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-              {vehicleLogs.length === 0 && (
-                <tr><td colSpan={6} className="p-8 text-center text-slate-500">Belum ada riwayat perjalanan</td></tr>
-              )}
-            </tbody>
-          </table>
+                <tr className="bg-slate-50 text-slate-600 border-b border-slate-200">
+                  <th className="p-4 font-semibold text-sm">Kendaraan</th>
+                  <th className="p-4 font-semibold text-sm">Supir / Teknisi</th>
+                  <th className="p-4 font-semibold text-sm">Tujuan & Keperluan</th>
+                  <th className="p-4 font-semibold text-sm">Odometer (Awal → Akhir)</th>
+                  <th className="p-4 font-semibold text-sm">Jarak</th>
+                  <th className="p-4 font-semibold text-sm">Berangkat</th>
+                  <th className="p-4 font-semibold text-sm">Kembali</th>
+                  <th className="p-4 font-semibold text-sm">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {vehicleLogs.map(log => {
+                  const vehicle = vehicles.find(v => v.id === log.vehicleId);
+                  const distance = (log.endOdometer != null && log.startOdometer != null)
+                    ? log.endOdometer - log.startOdometer
+                    : null;
+                  return (
+                    <tr key={log.id} className="hover:bg-slate-50 transition-colors">
+                      <td className="p-4">
+                        <p className="font-medium text-slate-800">{vehicle?.name}</p>
+                        <p className="text-xs font-mono text-slate-500">{vehicle?.plateNumber}</p>
+                      </td>
+                      <td className="p-4 font-medium text-slate-700">{log.driver}</td>
+                      <td className="p-4 text-sm text-slate-600 max-w-[200px] truncate" title={log.purpose}>{log.purpose}</td>
+                      <td className="p-4 text-sm text-slate-600">
+                        {log.startOdometer != null ? `${log.startOdometer.toLocaleString('id-ID')} km` : '-'}
+                        {' → '}
+                        {log.endOdometer != null ? `${log.endOdometer.toLocaleString('id-ID')} km` : '-'}
+                      </td>
+                      <td className="p-4 text-sm font-medium text-slate-700">
+                        {distance != null ? `${distance.toLocaleString('id-ID')} km` : '-'}
+                      </td>
+                      <td className="p-4 text-sm text-slate-600">{new Date(log.startDate).toLocaleString('id-ID')}</td>
+                      <td className="p-4 text-sm text-slate-600">{log.endDate ? new Date(log.endDate).toLocaleString('id-ID') : '-'}</td>
+                      <td className="p-4">
+                        {log.status === 'JALAN' ? (
+                          <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">Berjalan</span>
+                        ) : (
+                          <span className="px-2 py-1 text-xs font-medium bg-emerald-100 text-emerald-700 rounded-full">Selesai</span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+                {vehicleLogs.length === 0 && (
+                  <tr><td colSpan={8} className="p-8 text-center text-slate-500">Belum ada riwayat perjalanan</td></tr>
+                )}
+              </tbody>
+            </table>
           </div>
          </div>
       )}
@@ -259,43 +325,44 @@ export const VehicleView: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse whitespace-nowrap">
               <thead>
-              <tr className="bg-slate-50 text-slate-600 border-b border-slate-200">
-                <th className="p-4 font-semibold text-sm">Tanggal</th>
-                <th className="p-4 font-semibold text-sm">Kendaraan</th>
-                <th className="p-4 font-semibold text-sm">Jenis Kebutuhan</th>
-                <th className="p-4 font-semibold text-sm">Keterangan</th>
-                <th className="p-4 font-semibold text-sm">Teknisi / Penanggung Jawab</th>
-                <th className="p-4 font-semibold text-sm text-right">Biaya</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {vehicleNeeds.map(need => {
-                const vehicle = vehicles.find(v => v.id === need.vehicleId);
-                return (
-                  <tr key={need.id} className="hover:bg-slate-50 transition-colors">
-                    <td className="p-4 text-sm text-slate-600">{new Date(need.date).toLocaleDateString('id-ID')}</td>
-                    <td className="p-4 font-medium text-slate-800">{vehicle?.name} <span className="text-xs font-mono text-slate-500 block">{vehicle?.plateNumber}</span></td>
-                    <td className="p-4">
-                      <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${
-                        need.type === 'BBM' ? 'bg-amber-100 text-amber-800' :
-                        need.type === 'Servis' ? 'bg-red-100 text-red-800' :
-                        need.type === 'Suku Cadang' ? 'bg-indigo-100 text-indigo-800' :
-                        'bg-slate-100 text-slate-800'
-                      }`}>
-                        {need.type}
-                      </span>
-                    </td>
-                    <td className="p-4 text-sm text-slate-600 max-w-[200px] truncate" title={need.description}>{need.description}</td>
-                    <td className="p-4 text-sm font-medium text-slate-700">{need.pic || '-'}</td>
-                    <td className="p-4 font-medium text-slate-800 text-right">{formatRupiah(need.cost)}</td>
-                  </tr>
-                );
-              })}
-              {vehicleNeeds.length === 0 && (
-                <tr><td colSpan={6} className="p-8 text-center text-slate-500">Belum ada catatan kebutuhan</td></tr>
-              )}
-            </tbody>
-          </table>
+                <tr className="bg-slate-50 text-slate-600 border-b border-slate-200">
+                  <th className="p-4 font-semibold text-sm">Tanggal</th>
+                  <th className="p-4 font-semibold text-sm">Kendaraan</th>
+                  <th className="p-4 font-semibold text-sm">Jenis Kebutuhan</th>
+                  <th className="p-4 font-semibold text-sm">Keterangan</th>
+                  <th className="p-4 font-semibold text-sm">Teknisi / Penanggung Jawab</th>
+                  <th className="p-4 font-semibold text-sm text-right">Biaya</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {vehicleNeeds.map(need => {
+                  const vehicle = vehicles.find(v => v.id === need.vehicleId);
+                  return (
+                    <tr key={need.id} className="hover:bg-slate-50 transition-colors">
+                      <td className="p-4 text-sm text-slate-600">{new Date(need.date).toLocaleDateString('id-ID')}</td>
+                      <td className="p-4 font-medium text-slate-800">{vehicle?.name} <span className="text-xs font-mono text-slate-500 block">{vehicle?.plateNumber}</span></td>
+                      <td className="p-4">
+                        <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${
+                          need.type === 'BBM' ? 'bg-amber-100 text-amber-800' :
+                          need.type === 'Ganti Oli' ? 'bg-orange-100 text-orange-800' :
+                          need.type === 'Servis' ? 'bg-red-100 text-red-800' :
+                          need.type === 'Suku Cadang' ? 'bg-indigo-100 text-indigo-800' :
+                          'bg-slate-100 text-slate-800'
+                        }`}>
+                          {need.type}
+                        </span>
+                      </td>
+                      <td className="p-4 text-sm text-slate-600 max-w-[200px] truncate" title={need.description}>{need.description}</td>
+                      <td className="p-4 text-sm font-medium text-slate-700">{need.pic || '-'}</td>
+                      <td className="p-4 font-medium text-slate-800 text-right">{formatRupiah(need.cost)}</td>
+                    </tr>
+                  );
+                })}
+                {vehicleNeeds.length === 0 && (
+                  <tr><td colSpan={6} className="p-8 text-center text-slate-500">Belum ada catatan kebutuhan</td></tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       )}
@@ -310,28 +377,35 @@ export const VehicleView: React.FC = () => {
         title="Hapus Kendaraan"
       />
 
-
-      {/* Modals Implementation (Add Vehicle, Start Trip, Add Need) */}
-      
       {/* Add Vehicle Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50 p-4 pointer-events-none">
-          <motion.div 
-            drag 
-            dragMomentum={false}
-            className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden pointer-events-auto"
-          >
+          <motion.div drag dragMomentum={false} className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden pointer-events-auto">
             <div className="p-6 border-b border-slate-100 cursor-move bg-slate-50">
               <h3 className="text-xl font-bold text-slate-800">Tambah Kendaraan</h3>
             </div>
             <form onSubmit={handleAddVehicle} className="p-4 sm:p-6 space-y-4 overflow-y-auto max-h-[80vh]">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Nama / Jenis Kendaraan</label>
-                <input required type="text" value={newVehicle.name} onChange={e => setNewVehicle({...newVehicle, name: e.target.value})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none" placeholder="Mis: Toyota Hilux" />
+                <input required type="text" value={newVehicle.name} onChange={e => setNewVehicle({...newVehicle, name: e.target.value})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none" placeholder="Mis: Toyota Hilux" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Plat Nomor</label>
-                <input required type="text" value={newVehicle.plateNumber} onChange={e => setNewVehicle({...newVehicle, plateNumber: e.target.value.toUpperCase()})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none uppercase" placeholder="B 1234 CD" />
+                <input required type="text" value={newVehicle.plateNumber} onChange={e => setNewVehicle({...newVehicle, plateNumber: e.target.value.toUpperCase()})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none uppercase" placeholder="B 1234 CD" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Odometer Awal (km)</label>
+                  <input required type="number" min="0" value={newVehicle.odometer} onChange={e => setNewVehicle({...newVehicle, odometer: Number(e.target.value)})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Interval Oli (km)</label>
+                  <input required type="number" min="1000" value={newVehicle.oilChangeInterval} onChange={e => setNewVehicle({...newVehicle, oilChangeInterval: Number(e.target.value)})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Interval Servis Berkala (km)</label>
+                <input required type="number" min="1000" value={newVehicle.serviceInterval} onChange={e => setNewVehicle({...newVehicle, serviceInterval: Number(e.target.value)})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none" />
               </div>
               <div className="pt-4 flex space-x-3 justify-end">
                 <button type="button" onClick={() => setIsAddModalOpen(false)} className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">Batal</button>
@@ -345,11 +419,7 @@ export const VehicleView: React.FC = () => {
       {/* Start Trip Modal */}
       {isTripModalOpen && (
         <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50 p-4 pointer-events-none">
-          <motion.div 
-            drag 
-            dragMomentum={false}
-            className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden pointer-events-auto"
-          >
+          <motion.div drag dragMomentum={false} className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden pointer-events-auto">
             <div className="p-6 border-b border-slate-100 cursor-move bg-slate-50">
               <h3 className="text-xl font-bold text-slate-800">Mulai Perjalanan</h3>
             </div>
@@ -357,15 +427,11 @@ export const VehicleView: React.FC = () => {
               <div className="p-3 bg-slate-50 rounded-lg border border-slate-100 mb-4">
                 <span className="text-sm text-slate-500">Kendaraan:</span>
                 <p className="font-semibold text-slate-800">{vehicles.find(v => v.id === selectedVehicleId)?.name}</p>
+                <p className="text-xs text-slate-500">Odometer terakhir: {vehicles.find(v => v.id === selectedVehicleId)?.odometer} km</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Nama Supir / Teknisi</label>
-                <select 
-                  required 
-                  value={tripForm.driver} 
-                  onChange={e => setTripForm({...tripForm, driver: e.target.value})} 
-                  className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                >
+                <select required value={tripForm.driver} onChange={e => setTripForm({...tripForm, driver: e.target.value})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                   <option value="" disabled>Pilih Teknisi</option>
                   {technicians.map(t => (
                     <option key={t.id} value={t.name}>{t.name} - {t.role}</option>
@@ -373,8 +439,12 @@ export const VehicleView: React.FC = () => {
                 </select>
               </div>
               <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Odometer Awal (km)</label>
+                <input required type="number" value={tripForm.startOdometer} onChange={e => setTripForm({...tripForm, startOdometer: e.target.value})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+              </div>
+              <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Tujuan & Keperluan</label>
-                <textarea required rows={2} value={tripForm.purpose} onChange={e => setTripForm({...tripForm, purpose: e.target.value})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none" placeholder="Kirim barang semen ke proyek A..." />
+                <textarea required rows={2} value={tripForm.purpose} onChange={e => setTripForm({...tripForm, purpose: e.target.value})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none" placeholder="Kirim barang semen ke proyek A..." />
               </div>
               <div className="pt-4 flex space-x-3 justify-end">
                 <button type="button" onClick={() => setIsTripModalOpen(false)} className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">Batal</button>
@@ -385,16 +455,33 @@ export const VehicleView: React.FC = () => {
         </div>
       )}
 
+      {/* Finish Trip Modal */}
+      {isFinishModalOpen && (
+        <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50 p-4 pointer-events-none">
+          <motion.div drag dragMomentum={false} className="bg-white rounded-xl shadow-xl w-full max-w-sm overflow-hidden pointer-events-auto">
+            <div className="p-6 border-b border-slate-100 cursor-move bg-slate-50">
+              <h3 className="text-xl font-bold text-slate-800">Selesaikan Perjalanan</h3>
+            </div>
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Odometer Akhir (km)</label>
+                <input required type="number" value={finishForm.endOdometer} onChange={e => setFinishForm({ endOdometer: e.target.value })} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" />
+              </div>
+              <div className="pt-4 flex space-x-3 justify-end">
+                <button type="button" onClick={() => setIsFinishModalOpen(false)} className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">Batal</button>
+                <button type="button" onClick={() => handleFinishTrip(selectedLogId, vehicles.find(v => v.id === selectedVehicleId)?.odometer || 0)} className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors">Selesai</button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
       {/* Add Need Modal */}
       {isNeedModalOpen && (
         <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50 p-4 pointer-events-none">
-          <motion.div 
-            drag 
-            dragMomentum={false}
-            className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden pointer-events-auto"
-          >
+          <motion.div drag dragMomentum={false} className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden pointer-events-auto">
             <div className="p-6 border-b border-slate-100 cursor-move bg-slate-50">
-              <h3 className="text-xl font-bold text-slate-800">Catat Kebutuhan / Pengeluaran</h3>
+              <h3 className="text-xl font-bold text-slate-800">Catat Kebutuhan</h3>
             </div>
             <form onSubmit={handleAddNeed} className="p-4 sm:p-6 space-y-4 overflow-y-auto max-h-[80vh]">
               <div className="p-3 bg-slate-50 rounded-lg border border-slate-100 mb-4">
@@ -403,24 +490,23 @@ export const VehicleView: React.FC = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Jenis Kebutuhan</label>
-                <select value={needForm.type} onChange={e => setNeedForm({...needForm, type: e.target.value as VehicleNeedType})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none">
+                <select value={needForm.type} onChange={e => setNeedForm({...needForm, type: e.target.value as VehicleNeedType})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none">
                   <option value="BBM">BBM / Bensin</option>
+                  <option value="Ganti Oli">Ganti Oli</option>
                   <option value="Servis">Servis / Perbaikan</option>
-                  <option value="Suku Cadang">Suku Cadang / Ganti Oli</option>
+                  <option value="Suku Cadang">Suku Cadang</option>
                   <option value="Lainnya">Lainnya (Cuci, Tol, Parkir)</option>
                 </select>
                 {needForm.type === 'Servis' && (
-                  <p className="text-xs text-amber-600 mt-1 flex items-center"><AlertTriangle size={12} className="mr-1"/> Status kendaraan akan otomatis berubah menjadi "Perbaikan"</p>
+                  <p className="text-xs text-amber-600 mt-1 flex items-center"><AlertTriangle size={12} className="mr-1"/> Status kendaraan otomatis berubah menjadi "Perbaikan" dan odometer servis direset.</p>
+                )}
+                {needForm.type === 'Ganti Oli' && (
+                  <p className="text-xs text-amber-600 mt-1 flex items-center"><AlertTriangle size={12} className="mr-1"/> Odometer ganti oli otomatis direset.</p>
                 )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Nama Teknisi / Penanggung Jawab</label>
-                <select 
-                  required 
-                  value={needForm.pic} 
-                  onChange={e => setNeedForm({...needForm, pic: e.target.value})} 
-                  className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none"
-                >
+                <select required value={needForm.pic} onChange={e => setNeedForm({...needForm, pic: e.target.value})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none">
                   <option value="" disabled>Pilih Teknisi</option>
                   {technicians.map(t => (
                     <option key={t.id} value={t.name}>{t.name} - {t.role}</option>
@@ -429,11 +515,11 @@ export const VehicleView: React.FC = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Keterangan Detail</label>
-                <input required type="text" value={needForm.description} onChange={e => setNeedForm({...needForm, description: e.target.value})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none" placeholder="Isi solar 20L / Ganti kampas rem" />
+                <input required type="text" value={needForm.description} onChange={e => setNeedForm({...needForm, description: e.target.value})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none" placeholder="Isi solar 20L / Ganti kampas rem" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Total Biaya (Rp)</label>
-                <input required type="number" min="0" value={needForm.cost} onChange={e => setNeedForm({...needForm, cost: Number(e.target.value)})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none" />
+                <input required type="number" min="0" value={needForm.cost} onChange={e => setNeedForm({...needForm, cost: Number(e.target.value)})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none" />
               </div>
               <div className="pt-4 flex space-x-3 justify-end">
                 <button type="button" onClick={() => setIsNeedModalOpen(false)} className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">Batal</button>
@@ -443,7 +529,6 @@ export const VehicleView: React.FC = () => {
           </motion.div>
         </div>
       )}
-
     </div>
   );
 };

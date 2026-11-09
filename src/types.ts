@@ -2,7 +2,7 @@ export type TransactionType = 'IN' | 'OUT';
 export type EquipmentCondition = 'Baik' | 'Rusak Ringan' | 'Rusak Berat';
 export type EquipmentStatus = 'Tersedia' | 'Dipinjam';
 export type VehicleStatus = 'Tersedia' | 'Sedang Digunakan' | 'Perbaikan';
-export type VehicleNeedType = 'BBM' | 'Servis' | 'Suku Cadang' | 'Lainnya';
+export type VehicleNeedType = 'BBM' | 'Servis' | 'Ganti Oli' | 'Suku Cadang' | 'Lainnya';
 
 export type UserRole = 'admin' | 'superadmin' | 'pengawas' | 'teknisi';
 
@@ -84,6 +84,11 @@ export interface VehicleItem {
   plateNumber: string;
   name: string;
   status: VehicleStatus;
+  odometer: number;
+  lastOilChangeOdometer: number;
+  oilChangeInterval: number;
+  lastServiceOdometer: number;
+  serviceInterval: number;
 }
 
 export interface VehicleLog {
@@ -95,6 +100,8 @@ export interface VehicleLog {
   purpose: string;
   startDate: string;
   endDate?: string;
+  startOdometer: number;   // Odometer at start of trip
+  endOdometer?: number;    // Odometer at end of trip (set when trip finished)
   status: 'JALAN' | 'SELESAI';
 }
 

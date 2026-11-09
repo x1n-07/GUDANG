@@ -7,7 +7,7 @@ import {
 } from './types';
 import { 
   apiLogin, apiFetchDashboard, apiGoods, apiGoodsTransactions, apiEquipment, 
-  apiVehicles, apiTechnicians, apiCompanies, apiUsers 
+  apiVehicles, apiTechnicians, apiCompanies, apiUsers, apiLogout 
 } from './api/client';
 
 interface AppState {
@@ -23,12 +23,20 @@ interface AppState {
   vehicleNeeds: VehicleNeed[];
   technicians: Technician[];
   loading: boolean;
+  // Navigation history
+  navHistory: string[];
+  currentNavIndex: number;
 }
 
 interface AppContextType extends AppState {
   login: (username: string, password?: string) => Promise<boolean>;
   logout: () => void;
   refreshData: () => Promise<void>;
+  
+  // Navigation
+  navigateTo: (tab: string) => void;
+  goBack: () => void;
+  canGoBack: boolean;
   
   // Goods Actions
   addGoodsItem: (item: Omit<GoodsItem, 'id' | 'adminId' | 'companyId'>) => Promise<void>;
@@ -42,10 +50,10 @@ interface AppContextType extends AppState {
   updateEquipmentCondition: (id: string, condition: EquipmentItem['condition']) => Promise<void>;
   
   // Vehicle Actions
-  addVehicleItem: (item: Omit<VehicleItem, 'id' | 'status' | 'adminId' | 'companyId'>) => Promise<void>;
+  addVehicleItem: (item: Omit<VehicleItem, 'id' | 'status' | 'adminId' | 'companyId' | 'lastOilChangeOdometer' | 'lastServiceOdometer'>) => Promise<void>;
   removeVehicleItem: (id: string) => Promise<void>;
-  addVehicleLog: (log: Omit<VehicleLog, 'id' | 'date' | 'status' | 'adminId' | 'companyId'>) => Promise<void>;
-  finishVehicleTrip: (logId: string) => Promise<void>;
+  addVehicleLog: (log: Omit<VehicleLog, 'id' | 'startDate' | 'endDate' | 'endOdometer' | 'status' | 'adminId' | 'companyId'>) => Promise<void>;
+  finishVehicleTrip: (logId: string, endOdometer?: number) => Promise<void>;
   addVehicleNeed: (need: Omit<VehicleNeed, 'id' | 'date' | 'adminId' | 'companyId'>) => Promise<void>;
   updateVehicleStatus: (id: string, status: VehicleItem['status']) => Promise<void>;
   
@@ -66,25 +74,38 @@ interface AppContextType extends AppState {
   toggleUserDisabled: (id: string, disabled: boolean) => Promise<void>;
 }
 
-const emptyState: AppState = {
-  users: [],
-  companies: [],
-  currentUser: null,
-  goods: [],
-  goodsTransactions: [],
-  equipment: [],
-  equipmentLogs: [],
-  vehicles: [],
-  vehicleLogs: [],
-  vehicleNeeds: [],
-  technicians: [],
-  loading: false,
+const getInitialState = (): AppState => {
+  const storedUser = localStorage.getItem('warehouse_user');
+  const storedHistory = localStorage.getItem('navHistory');
+  const storedIndex = localStorage.getItem('currentNavIndex');
+  
+  return {
+    users: [],
+    companies: [],
+    currentUser: storedUser ? JSON.parse(storedUser) : null,
+    goods: [],
+    goodsTransactions: [],
+    equipment: [],
+    equipmentLogs: [],
+    vehicles: [],
+    vehicleLogs: [],
+    vehicleNeeds: [],
+    technicians: [],
+    loading: false,
+    navHistory: storedHistory ? JSON.parse(storedHistory) : ['dashboard'],
+    currentNavIndex: storedIndex ? parseInt(storedIndex, 10) : 0,
+  };
 };
 
 const AppContext = createContext<AppContextType | null>(null);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [state, setState] = useState<AppState>(emptyState);
+  const [state, setState] = useState<AppState>(getInitialState());
+
+  const saveNavState = (history: string[], index: number) => {
+    localStorage.setItem('navHistory', JSON.stringify(history));
+    localStorage.setItem('currentNavIndex', index.toString());
+  };
 
   const refreshData = async () => {
     if (!state.currentUser) return;
@@ -111,7 +132,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const login = async (username: string, password?: string) => {
     try {
       const user = await apiLogin(username, password || '');
-      setState(prev => ({ ...prev, currentUser: user }));
+      setState(prev => ({ 
+        ...prev, 
+        currentUser: user,
+        navHistory: ['dashboard'],
+        currentNavIndex: 0,
+      }));
+      saveNavState(['dashboard'], 0);
       return true;
     } catch (e) {
       console.error('Login failed', e);
@@ -120,9 +147,63 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const logout = () => {
-    (window as any).__TOKEN__ = null;
-    setState(emptyState);
+    apiLogout();
+    localStorage.removeItem('activeTab');
+    localStorage.removeItem('navHistory');
+    localStorage.removeItem('currentNavIndex');
+    setState({
+      users: [],
+      companies: [],
+      currentUser: null,
+      goods: [],
+      goodsTransactions: [],
+      equipment: [],
+      equipmentLogs: [],
+      vehicles: [],
+      vehicleLogs: [],
+      vehicleNeeds: [],
+      technicians: [],
+      loading: false,
+      navHistory: ['dashboard'],
+      currentNavIndex: 0,
+    });
   };
+
+  const navigateTo = (tab: string) => {
+    setState(prev => {
+      // If navigating to same tab, do nothing
+      if (prev.navHistory[prev.currentNavIndex] === tab) {
+        return prev;
+      }
+      
+      // Truncate history after current index (when going back then navigating somewhere new)
+      const newHistory = prev.navHistory.slice(0, prev.currentNavIndex + 1);
+      newHistory.push(tab);
+      const newIndex = newHistory.length - 1;
+      
+      saveNavState(newHistory, newIndex);
+      return {
+        ...prev,
+        navHistory: newHistory,
+        currentNavIndex: newIndex,
+      };
+    });
+  };
+
+  const goBack = () => {
+    setState(prev => {
+      if (prev.currentNavIndex <= 0) return prev;
+      
+      const newIndex = prev.currentNavIndex - 1;
+      saveNavState(prev.navHistory, newIndex);
+      return {
+        ...prev,
+        currentNavIndex: newIndex,
+      };
+    });
+  };
+
+  const canGoBack = state.currentNavIndex > 0;
 
   // ---- Goods ----
   const addGoodsItem = async (item: any) => {
@@ -169,8 +250,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     await apiVehicles.logCreate(log);
     await refreshData();
   };
-  const finishVehicleTrip = async (logId: string) => {
-    await apiVehicles.finishTrip(logId);
+  const finishVehicleTrip = async (logId: string, endOdometer?: number) => {
+    await apiVehicles.finishTrip(logId, endOdometer);
     await refreshData();
   };
   const addVehicleNeed = async (need: any) => {
@@ -194,8 +275,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // ---- Companies ----
   const addCompany = async (company: any) => {
-    await apiCompanies.create(company);
-    await refreshData();
+    try {
+      await apiCompanies.create(company);
+      await refreshData();
+    } catch (e: any) {
+      alert(`Gagal menambah perusahaan: ${e.message}`);
+    }
   };
   const removeCompany = async (id: string) => {
     await apiCompanies.delete(id);
@@ -232,6 +317,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     <AppContext.Provider value={{
       ...state,
       login, logout, refreshData,
+      navigateTo, goBack, canGoBack,
       addGoodsItem, removeGoodsItem, addGoodsTransaction,
       addEquipmentItem, removeEquipmentItem, addEquipmentLog, updateEquipmentCondition,
       addVehicleItem, removeVehicleItem, addVehicleLog, finishVehicleTrip, addVehicleNeed, updateVehicleStatus,

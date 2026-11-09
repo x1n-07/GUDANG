@@ -456,7 +456,6 @@ export type EquipmentItemCreateOrConnectWithoutCompanyInput = {
 
 export type EquipmentItemCreateManyCompanyInputEnvelope = {
   data: Prisma.EquipmentItemCreateManyCompanyInput | Prisma.EquipmentItemCreateManyCompanyInput[]
-  skipDuplicates?: boolean
 }
 
 export type EquipmentItemUpsertWithWhereUniqueWithoutCompanyInput = {
@@ -1351,7 +1350,6 @@ export type EquipmentItemCreateManyArgs<ExtArgs extends runtime.Types.Extensions
    * The data used to create many EquipmentItems.
    */
   data: Prisma.EquipmentItemCreateManyInput | Prisma.EquipmentItemCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1370,7 +1368,6 @@ export type EquipmentItemCreateManyAndReturnArgs<ExtArgs extends runtime.Types.E
    * The data used to create many EquipmentItems.
    */
   data: Prisma.EquipmentItemCreateManyInput | Prisma.EquipmentItemCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

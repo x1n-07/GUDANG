@@ -1,15 +1,19 @@
 import { PrismaClient } from './generated/prisma/client.js';
-import { PrismaPg } from '@prisma/adapter-pg';
-import pg from 'pg';
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
+import path from 'node:path';
 
 dotenv.config();
 
-const connectionString = process.env.DATABASE_URL!;
-const pool = new pg.Pool({ connectionString });
-const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter } as any);
+const dbPath = path.resolve(process.cwd(), 'database', 'warehouse.db');
+const databaseUrl = `file:${dbPath}`;
+
+const adapter = new PrismaBetterSqlite3({
+  url: databaseUrl,
+});
+
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   const hashed = await bcrypt.hash('123', 10);

@@ -404,7 +404,6 @@ export type TechnicianCreateOrConnectWithoutCompanyInput = {
 
 export type TechnicianCreateManyCompanyInputEnvelope = {
   data: Prisma.TechnicianCreateManyCompanyInput | Prisma.TechnicianCreateManyCompanyInput[]
-  skipDuplicates?: boolean
 }
 
 export type TechnicianUpsertWithWhereUniqueWithoutCompanyInput = {
@@ -1195,7 +1194,6 @@ export type TechnicianCreateManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * The data used to create many Technicians.
    */
   data: Prisma.TechnicianCreateManyInput | Prisma.TechnicianCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1214,7 +1212,6 @@ export type TechnicianCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exte
    * The data used to create many Technicians.
    */
   data: Prisma.TechnicianCreateManyInput | Prisma.TechnicianCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

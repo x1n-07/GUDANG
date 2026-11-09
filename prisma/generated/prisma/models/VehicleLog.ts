@@ -20,8 +20,20 @@ export type VehicleLogModel = runtime.Types.Result.DefaultSelection<Prisma.$Vehi
 
 export type AggregateVehicleLog = {
   _count: VehicleLogCountAggregateOutputType | null
+  _avg: VehicleLogAvgAggregateOutputType | null
+  _sum: VehicleLogSumAggregateOutputType | null
   _min: VehicleLogMinAggregateOutputType | null
   _max: VehicleLogMaxAggregateOutputType | null
+}
+
+export type VehicleLogAvgAggregateOutputType = {
+  startOdometer: number | null
+  endOdometer: number | null
+}
+
+export type VehicleLogSumAggregateOutputType = {
+  startOdometer: number | null
+  endOdometer: number | null
 }
 
 export type VehicleLogMinAggregateOutputType = {
@@ -33,6 +45,8 @@ export type VehicleLogMinAggregateOutputType = {
   purpose: string | null
   startDate: Date | null
   endDate: Date | null
+  startOdometer: number | null
+  endOdometer: number | null
   status: string | null
 }
 
@@ -45,6 +59,8 @@ export type VehicleLogMaxAggregateOutputType = {
   purpose: string | null
   startDate: Date | null
   endDate: Date | null
+  startOdometer: number | null
+  endOdometer: number | null
   status: string | null
 }
 
@@ -57,10 +73,22 @@ export type VehicleLogCountAggregateOutputType = {
   purpose: number
   startDate: number
   endDate: number
+  startOdometer: number
+  endOdometer: number
   status: number
   _all: number
 }
 
+
+export type VehicleLogAvgAggregateInputType = {
+  startOdometer?: true
+  endOdometer?: true
+}
+
+export type VehicleLogSumAggregateInputType = {
+  startOdometer?: true
+  endOdometer?: true
+}
 
 export type VehicleLogMinAggregateInputType = {
   id?: true
@@ -71,6 +99,8 @@ export type VehicleLogMinAggregateInputType = {
   purpose?: true
   startDate?: true
   endDate?: true
+  startOdometer?: true
+  endOdometer?: true
   status?: true
 }
 
@@ -83,6 +113,8 @@ export type VehicleLogMaxAggregateInputType = {
   purpose?: true
   startDate?: true
   endDate?: true
+  startOdometer?: true
+  endOdometer?: true
   status?: true
 }
 
@@ -95,6 +127,8 @@ export type VehicleLogCountAggregateInputType = {
   purpose?: true
   startDate?: true
   endDate?: true
+  startOdometer?: true
+  endOdometer?: true
   status?: true
   _all?: true
 }
@@ -137,6 +171,18 @@ export type VehicleLogAggregateArgs<ExtArgs extends runtime.Types.Extensions.Int
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: VehicleLogAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: VehicleLogSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: VehicleLogMinAggregateInputType
@@ -167,6 +213,8 @@ export type VehicleLogGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   _count?: VehicleLogCountAggregateInputType | true
+  _avg?: VehicleLogAvgAggregateInputType
+  _sum?: VehicleLogSumAggregateInputType
   _min?: VehicleLogMinAggregateInputType
   _max?: VehicleLogMaxAggregateInputType
 }
@@ -180,8 +228,12 @@ export type VehicleLogGroupByOutputType = {
   purpose: string
   startDate: Date
   endDate: Date | null
+  startOdometer: number | null
+  endOdometer: number | null
   status: string
   _count: VehicleLogCountAggregateOutputType | null
+  _avg: VehicleLogAvgAggregateOutputType | null
+  _sum: VehicleLogSumAggregateOutputType | null
   _min: VehicleLogMinAggregateOutputType | null
   _max: VehicleLogMaxAggregateOutputType | null
 }
@@ -213,6 +265,8 @@ export type VehicleLogWhereInput = {
   purpose?: Prisma.StringFilter<"VehicleLog"> | string
   startDate?: Prisma.DateTimeFilter<"VehicleLog"> | Date | string
   endDate?: Prisma.DateTimeNullableFilter<"VehicleLog"> | Date | string | null
+  startOdometer?: Prisma.FloatNullableFilter<"VehicleLog"> | number | null
+  endOdometer?: Prisma.FloatNullableFilter<"VehicleLog"> | number | null
   status?: Prisma.StringFilter<"VehicleLog"> | string
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   vehicle?: Prisma.XOR<Prisma.VehicleItemScalarRelationFilter, Prisma.VehicleItemWhereInput>
@@ -227,6 +281,8 @@ export type VehicleLogOrderByWithRelationInput = {
   purpose?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  startOdometer?: Prisma.SortOrderInput | Prisma.SortOrder
+  endOdometer?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   company?: Prisma.CompanyOrderByWithRelationInput
   vehicle?: Prisma.VehicleItemOrderByWithRelationInput
@@ -244,6 +300,8 @@ export type VehicleLogWhereUniqueInput = Prisma.AtLeast<{
   purpose?: Prisma.StringFilter<"VehicleLog"> | string
   startDate?: Prisma.DateTimeFilter<"VehicleLog"> | Date | string
   endDate?: Prisma.DateTimeNullableFilter<"VehicleLog"> | Date | string | null
+  startOdometer?: Prisma.FloatNullableFilter<"VehicleLog"> | number | null
+  endOdometer?: Prisma.FloatNullableFilter<"VehicleLog"> | number | null
   status?: Prisma.StringFilter<"VehicleLog"> | string
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   vehicle?: Prisma.XOR<Prisma.VehicleItemScalarRelationFilter, Prisma.VehicleItemWhereInput>
@@ -258,10 +316,14 @@ export type VehicleLogOrderByWithAggregationInput = {
   purpose?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  startOdometer?: Prisma.SortOrderInput | Prisma.SortOrder
+  endOdometer?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   _count?: Prisma.VehicleLogCountOrderByAggregateInput
+  _avg?: Prisma.VehicleLogAvgOrderByAggregateInput
   _max?: Prisma.VehicleLogMaxOrderByAggregateInput
   _min?: Prisma.VehicleLogMinOrderByAggregateInput
+  _sum?: Prisma.VehicleLogSumOrderByAggregateInput
 }
 
 export type VehicleLogScalarWhereWithAggregatesInput = {
@@ -276,6 +338,8 @@ export type VehicleLogScalarWhereWithAggregatesInput = {
   purpose?: Prisma.StringWithAggregatesFilter<"VehicleLog"> | string
   startDate?: Prisma.DateTimeWithAggregatesFilter<"VehicleLog"> | Date | string
   endDate?: Prisma.DateTimeNullableWithAggregatesFilter<"VehicleLog"> | Date | string | null
+  startOdometer?: Prisma.FloatNullableWithAggregatesFilter<"VehicleLog"> | number | null
+  endOdometer?: Prisma.FloatNullableWithAggregatesFilter<"VehicleLog"> | number | null
   status?: Prisma.StringWithAggregatesFilter<"VehicleLog"> | string
 }
 
@@ -286,6 +350,8 @@ export type VehicleLogCreateInput = {
   purpose: string
   startDate?: Date | string
   endDate?: Date | string | null
+  startOdometer?: number | null
+  endOdometer?: number | null
   status: string
   company: Prisma.CompanyCreateNestedOneWithoutVehicleLogsInput
   vehicle: Prisma.VehicleItemCreateNestedOneWithoutLogsInput
@@ -300,6 +366,8 @@ export type VehicleLogUncheckedCreateInput = {
   purpose: string
   startDate?: Date | string
   endDate?: Date | string | null
+  startOdometer?: number | null
+  endOdometer?: number | null
   status: string
 }
 
@@ -310,6 +378,8 @@ export type VehicleLogUpdateInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  endOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutVehicleLogsNestedInput
   vehicle?: Prisma.VehicleItemUpdateOneRequiredWithoutLogsNestedInput
@@ -324,6 +394,8 @@ export type VehicleLogUncheckedUpdateInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  endOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -336,6 +408,8 @@ export type VehicleLogCreateManyInput = {
   purpose: string
   startDate?: Date | string
   endDate?: Date | string | null
+  startOdometer?: number | null
+  endOdometer?: number | null
   status: string
 }
 
@@ -346,6 +420,8 @@ export type VehicleLogUpdateManyMutationInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  endOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -358,6 +434,8 @@ export type VehicleLogUncheckedUpdateManyInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  endOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -380,7 +458,14 @@ export type VehicleLogCountOrderByAggregateInput = {
   purpose?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
+  startOdometer?: Prisma.SortOrder
+  endOdometer?: Prisma.SortOrder
   status?: Prisma.SortOrder
+}
+
+export type VehicleLogAvgOrderByAggregateInput = {
+  startOdometer?: Prisma.SortOrder
+  endOdometer?: Prisma.SortOrder
 }
 
 export type VehicleLogMaxOrderByAggregateInput = {
@@ -392,6 +477,8 @@ export type VehicleLogMaxOrderByAggregateInput = {
   purpose?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
+  startOdometer?: Prisma.SortOrder
+  endOdometer?: Prisma.SortOrder
   status?: Prisma.SortOrder
 }
 
@@ -404,7 +491,14 @@ export type VehicleLogMinOrderByAggregateInput = {
   purpose?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
+  startOdometer?: Prisma.SortOrder
+  endOdometer?: Prisma.SortOrder
   status?: Prisma.SortOrder
+}
+
+export type VehicleLogSumOrderByAggregateInput = {
+  startOdometer?: Prisma.SortOrder
+  endOdometer?: Prisma.SortOrder
 }
 
 export type VehicleLogCreateNestedManyWithoutCompanyInput = {
@@ -495,6 +589,14 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type VehicleLogCreateWithoutCompanyInput = {
   id?: string
   adminId: string
@@ -502,6 +604,8 @@ export type VehicleLogCreateWithoutCompanyInput = {
   purpose: string
   startDate?: Date | string
   endDate?: Date | string | null
+  startOdometer?: number | null
+  endOdometer?: number | null
   status: string
   vehicle: Prisma.VehicleItemCreateNestedOneWithoutLogsInput
 }
@@ -514,6 +618,8 @@ export type VehicleLogUncheckedCreateWithoutCompanyInput = {
   purpose: string
   startDate?: Date | string
   endDate?: Date | string | null
+  startOdometer?: number | null
+  endOdometer?: number | null
   status: string
 }
 
@@ -524,7 +630,6 @@ export type VehicleLogCreateOrConnectWithoutCompanyInput = {
 
 export type VehicleLogCreateManyCompanyInputEnvelope = {
   data: Prisma.VehicleLogCreateManyCompanyInput | Prisma.VehicleLogCreateManyCompanyInput[]
-  skipDuplicates?: boolean
 }
 
 export type VehicleLogUpsertWithWhereUniqueWithoutCompanyInput = {
@@ -555,6 +660,8 @@ export type VehicleLogScalarWhereInput = {
   purpose?: Prisma.StringFilter<"VehicleLog"> | string
   startDate?: Prisma.DateTimeFilter<"VehicleLog"> | Date | string
   endDate?: Prisma.DateTimeNullableFilter<"VehicleLog"> | Date | string | null
+  startOdometer?: Prisma.FloatNullableFilter<"VehicleLog"> | number | null
+  endOdometer?: Prisma.FloatNullableFilter<"VehicleLog"> | number | null
   status?: Prisma.StringFilter<"VehicleLog"> | string
 }
 
@@ -565,6 +672,8 @@ export type VehicleLogCreateWithoutVehicleInput = {
   purpose: string
   startDate?: Date | string
   endDate?: Date | string | null
+  startOdometer?: number | null
+  endOdometer?: number | null
   status: string
   company: Prisma.CompanyCreateNestedOneWithoutVehicleLogsInput
 }
@@ -577,6 +686,8 @@ export type VehicleLogUncheckedCreateWithoutVehicleInput = {
   purpose: string
   startDate?: Date | string
   endDate?: Date | string | null
+  startOdometer?: number | null
+  endOdometer?: number | null
   status: string
 }
 
@@ -587,7 +698,6 @@ export type VehicleLogCreateOrConnectWithoutVehicleInput = {
 
 export type VehicleLogCreateManyVehicleInputEnvelope = {
   data: Prisma.VehicleLogCreateManyVehicleInput | Prisma.VehicleLogCreateManyVehicleInput[]
-  skipDuplicates?: boolean
 }
 
 export type VehicleLogUpsertWithWhereUniqueWithoutVehicleInput = {
@@ -614,6 +724,8 @@ export type VehicleLogCreateManyCompanyInput = {
   purpose: string
   startDate?: Date | string
   endDate?: Date | string | null
+  startOdometer?: number | null
+  endOdometer?: number | null
   status: string
 }
 
@@ -624,6 +736,8 @@ export type VehicleLogUpdateWithoutCompanyInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  endOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   vehicle?: Prisma.VehicleItemUpdateOneRequiredWithoutLogsNestedInput
 }
@@ -636,6 +750,8 @@ export type VehicleLogUncheckedUpdateWithoutCompanyInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  endOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -647,6 +763,8 @@ export type VehicleLogUncheckedUpdateManyWithoutCompanyInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  endOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -658,6 +776,8 @@ export type VehicleLogCreateManyVehicleInput = {
   purpose: string
   startDate?: Date | string
   endDate?: Date | string | null
+  startOdometer?: number | null
+  endOdometer?: number | null
   status: string
 }
 
@@ -668,6 +788,8 @@ export type VehicleLogUpdateWithoutVehicleInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  endOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   company?: Prisma.CompanyUpdateOneRequiredWithoutVehicleLogsNestedInput
 }
@@ -680,6 +802,8 @@ export type VehicleLogUncheckedUpdateWithoutVehicleInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  endOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -691,6 +815,8 @@ export type VehicleLogUncheckedUpdateManyWithoutVehicleInput = {
   purpose?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  endOdometer?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -705,6 +831,8 @@ export type VehicleLogSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   purpose?: boolean
   startDate?: boolean
   endDate?: boolean
+  startOdometer?: boolean
+  endOdometer?: boolean
   status?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VehicleItemDefaultArgs<ExtArgs>
@@ -719,6 +847,8 @@ export type VehicleLogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   purpose?: boolean
   startDate?: boolean
   endDate?: boolean
+  startOdometer?: boolean
+  endOdometer?: boolean
   status?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VehicleItemDefaultArgs<ExtArgs>
@@ -733,6 +863,8 @@ export type VehicleLogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   purpose?: boolean
   startDate?: boolean
   endDate?: boolean
+  startOdometer?: boolean
+  endOdometer?: boolean
   status?: boolean
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VehicleItemDefaultArgs<ExtArgs>
@@ -747,10 +879,12 @@ export type VehicleLogSelectScalar = {
   purpose?: boolean
   startDate?: boolean
   endDate?: boolean
+  startOdometer?: boolean
+  endOdometer?: boolean
   status?: boolean
 }
 
-export type VehicleLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "adminId" | "companyId" | "vehicleId" | "driver" | "purpose" | "startDate" | "endDate" | "status", ExtArgs["result"]["vehicleLog"]>
+export type VehicleLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "adminId" | "companyId" | "vehicleId" | "driver" | "purpose" | "startDate" | "endDate" | "startOdometer" | "endOdometer" | "status", ExtArgs["result"]["vehicleLog"]>
 export type VehicleLogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VehicleItemDefaultArgs<ExtArgs>
@@ -779,6 +913,8 @@ export type $VehicleLogPayload<ExtArgs extends runtime.Types.Extensions.Internal
     purpose: string
     startDate: Date
     endDate: Date | null
+    startOdometer: number | null
+    endOdometer: number | null
     status: string
   }, ExtArgs["result"]["vehicleLog"]>
   composites: {}
@@ -1213,6 +1349,8 @@ export interface VehicleLogFieldRefs {
   readonly purpose: Prisma.FieldRef<"VehicleLog", 'String'>
   readonly startDate: Prisma.FieldRef<"VehicleLog", 'DateTime'>
   readonly endDate: Prisma.FieldRef<"VehicleLog", 'DateTime'>
+  readonly startOdometer: Prisma.FieldRef<"VehicleLog", 'Float'>
+  readonly endOdometer: Prisma.FieldRef<"VehicleLog", 'Float'>
   readonly status: Prisma.FieldRef<"VehicleLog", 'String'>
 }
     
@@ -1448,7 +1586,6 @@ export type VehicleLogCreateManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * The data used to create many VehicleLogs.
    */
   data: Prisma.VehicleLogCreateManyInput | Prisma.VehicleLogCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1467,7 +1604,6 @@ export type VehicleLogCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exte
    * The data used to create many VehicleLogs.
    */
   data: Prisma.VehicleLogCreateManyInput | Prisma.VehicleLogCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

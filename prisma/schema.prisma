@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
 }
 
 model User {
@@ -104,13 +104,18 @@ model EquipmentLog {
 }
 
 model VehicleItem {
-  id          String   @id @default(uuid())
-  adminId     String
-  companyId   String
-  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  plateNumber String
-  name        String
-  status      String   // 'Tersedia' | 'Sedang Digunakan' | 'Perbaikan'
+  id                  String   @id @default(uuid())
+  adminId             String
+  companyId           String
+  company             Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  plateNumber         String
+  name                String
+  status              String   // 'Tersedia' | 'Sedang Digunakan' | 'Perbaikan'
+  odometer            Float    @default(0)   // Current odometer reading (km)
+  lastOilChangeOdometer Float  @default(0)   // Odometer at last oil change
+  oilChangeInterval   Float    @default(5000)  // Oil change interval (km)
+  lastServiceOdometer Float    @default(0)   // Odometer at last service
+  serviceInterval     Float    @default(10000) // Service interval (km)
 
   // Relations
   logs        VehicleLog[]
@@ -118,17 +123,19 @@ model VehicleItem {
 }
 
 model VehicleLog {
-  id          String   @id @default(uuid())
-  adminId     String
-  companyId   String
-  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  vehicleId   String
-  vehicle     VehicleItem @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
-  driver      String
-  purpose     String
-  startDate   DateTime @default(now())
-  endDate     DateTime?
-  status      String   // 'JALAN' | 'SELESAI'
+  id            String   @id @default(uuid())
+  adminId       String
+  companyId     String
+  company       Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  vehicleId     String
+  vehicle       VehicleItem @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  driver        String
+  purpose       String
+  startDate     DateTime @default(now())
+  endDate       DateTime?
+  startOdometer Float?   // Odometer at start of trip
+  endOdometer   Float?   // Odometer at end of trip
+  status        String   // 'JALAN' | 'SELESAI'
 }
 
 model VehicleNeed {

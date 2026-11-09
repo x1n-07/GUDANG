@@ -8,16 +8,17 @@ import { TechnicianView } from './components/views/TechnicianView';
 import { ExportView } from './components/views/ExportView';
 import { UserManagementView } from './components/views/UserManagementView';
 import { LoginView } from './components/views/LoginView';
+import { BackButton } from './components/BackButton';
 import { AppProvider, useAppContext } from './store';
 import { Menu } from 'lucide-react';
 
 function Dashboard() {
-  const { currentUser, companies } = useAppContext();
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const { currentUser, companies, navigateTo, goBack, canGoBack, navHistory, currentNavIndex } = useAppContext();
+  const activeTab = navHistory[currentNavIndex];
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleTabChange = (tab: string) => {
-    setActiveTab(tab);
+    navigateTo(tab);
     setIsSidebarOpen(false); // Close sidebar automatically when menu is selected
   };
 
@@ -48,11 +49,12 @@ function Dashboard() {
           >
             <Menu size={24} />
           </button>
+          <BackButton />
           <h1 className="ml-4 text-xl font-bold text-slate-800 capitalize">Stock Gudang{appTitle}</h1>
         </header>
 
         <div className="flex-1 overflow-auto">
-          {activeTab === 'dashboard' && <DashboardView />}
+          {activeTab === 'dashboard' && <DashboardView onTabChange={handleTabChange} />}
           {activeTab === 'goods' && <GoodsView />}
           {activeTab === 'equipment' && <EquipmentView />}
           {activeTab === 'vehicles' && <VehicleView />}

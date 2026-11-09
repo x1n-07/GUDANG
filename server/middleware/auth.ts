@@ -20,7 +20,8 @@ export const authenticateToken = (req: AuthRequest, res: Response, next: NextFun
 
   jwt.verify(token, process.env.JWT_SECRET || 'warehouse-app-secret-key-2026', (err: any, user: any) => {
     if (err) {
-      res.status(403).json({ message: 'Forbidden' });
+      // Token invalid/expired => 401 so the client knows to re-authenticate
+      res.status(401).json({ message: 'Sesi login telah berakhir, silakan login ulang' });
       return;
     }
     req.user = user;

@@ -6,12 +6,18 @@ import { authenticateToken, authorizeRole, AuthRequest } from '../middleware/aut
 const router = Router();
 router.use(authenticateToken);
 
-// GET all users
+// GET all users (for account management - excludes superadmin from the list)
 router.get('/', authorizeRole(['superadmin', 'admin']), async (req: AuthRequest, res) => {
   try {
     const where: any = {};
+    // Filter out superadmin from the managed accounts list
+    // Superadmin is the system manager, not a managed account in the branch view
     if (req.user?.role !== 'superadmin') {
       where.companyId = req.user?.companyId;
+      where.role = { not: 'superadmin' };
+    } else {
+      // Superadmin can see all non-superadmin users for management
+      where.role = { not: 'superadmin' };
     }
     const users = await prisma.user.findMany({
       where,
@@ -59,7 +65,11 @@ router.post('/', authorizeRole(['superadmin', 'admin']), async (req: AuthRequest
 router.put('/:id', authorizeRole(['superadmin', 'admin']), async (req: AuthRequest, res) => {
   try {
     const { password, ...updates } = req.body;
-    const data: any = { ...updates };
+    // Remove id from updates to prevent primary key modification
+    const cleanUpdates = Object.fromEntries(
+      Object.entries(updates).filter(([key]) => key !== 'id')
+    );
+    const data: any = { ...cleanUpdates };
     if (password) data.password = await bcrypt.hash(password, 10);
     const user = await prisma.user.update({ where: { id: req.params.id }, data });
     res.json({

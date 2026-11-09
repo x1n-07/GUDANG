@@ -380,13 +380,16 @@ export const UserManagementView: React.FC = () => {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                      Password {editingUserId && <span className="text-slate-400 font-normal">(Kosongkan jika tidak diubah)</span>}
+                    </label>
                     <input
-                      required
+                      required={!editingUserId}
                       type="password"
                       value={newUser.password}
                       onChange={e => setNewUser({ ...newUser, password: e.target.value })}
                       className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                      placeholder={editingUserId ? "••••••••" : ""}
                     />
                   </div>
                 </div>
@@ -467,7 +470,9 @@ export const UserManagementView: React.FC = () => {
 
                 <div className="pt-4 flex space-x-3 justify-end border-t border-slate-100">
                   <button type="button" onClick={() => setIsAddUserModalOpen(false)} className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">Batal</button>
-                  <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Tambah Akun</button>
+                  <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    {editingUserId ? 'Update Akun' : 'Tambah Akun'}
+                  </button>
                 </div>
               </form>
             </motion.div>

@@ -520,7 +520,6 @@ export type EquipmentLogCreateOrConnectWithoutCompanyInput = {
 
 export type EquipmentLogCreateManyCompanyInputEnvelope = {
   data: Prisma.EquipmentLogCreateManyCompanyInput | Prisma.EquipmentLogCreateManyCompanyInput[]
-  skipDuplicates?: boolean
 }
 
 export type EquipmentLogUpsertWithWhereUniqueWithoutCompanyInput = {
@@ -583,7 +582,6 @@ export type EquipmentLogCreateOrConnectWithoutEquipmentInput = {
 
 export type EquipmentLogCreateManyEquipmentInputEnvelope = {
   data: Prisma.EquipmentLogCreateManyEquipmentInput | Prisma.EquipmentLogCreateManyEquipmentInput[]
-  skipDuplicates?: boolean
 }
 
 export type EquipmentLogUpsertWithWhereUniqueWithoutEquipmentInput = {
@@ -1444,7 +1442,6 @@ export type EquipmentLogCreateManyArgs<ExtArgs extends runtime.Types.Extensions.
    * The data used to create many EquipmentLogs.
    */
   data: Prisma.EquipmentLogCreateManyInput | Prisma.EquipmentLogCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1463,7 +1460,6 @@ export type EquipmentLogCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ex
    * The data used to create many EquipmentLogs.
    */
   data: Prisma.EquipmentLogCreateManyInput | Prisma.EquipmentLogCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

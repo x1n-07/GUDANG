@@ -25,14 +25,23 @@ router.get('/', async (req: AuthRequest, res) => {
 
 router.post('/', async (req: AuthRequest, res) => {
   try {
-    const { name, role, phone } = req.body;
+    const { name, role, phone, companyId } = req.body;
+    const targetCompanyId = req.user?.role === 'superadmin' 
+      ? (companyId || req.user?.companyId) 
+      : req.user?.companyId;
+
+    if (!targetCompanyId) {
+      res.status(400).json({ message: 'Company ID harus diisi' });
+      return;
+    }
+
     const tech = await prisma.technician.create({
       data: {
         adminId: req.user!.id,
-        companyId: req.user!.companyId || '',
-        name,
+        companyId: targetCompanyId,
+        name: name.trim(),
         role,
-        phone,
+        phone: phone || '',
       },
     });
     res.status(201).json(tech);

@@ -58,15 +58,6 @@ export const GoodsView: React.FC = () => {
     <div className="p-6 max-w-6xl mx-auto space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-2xl font-bold text-slate-800">Manajemen Stok Barang</h2>
-        <div className="flex space-x-2 w-full sm:w-auto">
-          <button 
-            onClick={() => setIsAddModalOpen(true)}
-            className="flex-1 sm:flex-none justify-center flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors shadow-sm"
-          >
-            <Plus size={18} className="mr-2" />
-            Barang Baru
-          </button>
-        </div>
       </div>
 
       <div className="flex flex-col md:flex-row border-b border-slate-200 justify-between items-start md:items-center gap-4">
@@ -152,7 +143,7 @@ export const GoodsView: React.FC = () => {
                     >
                       Keluar
                     </button>
-                    {currentUser?.role === 'superadmin' && (
+                    {(currentUser?.role === 'superadmin' || currentUser?.role === 'admin') && (
                       <button 
                         onClick={() => setItemToDelete(item.id)}
                         className="px-2 py-1.5 text-xs font-medium text-red-700 bg-red-50 rounded hover:bg-red-100 transition-colors"
