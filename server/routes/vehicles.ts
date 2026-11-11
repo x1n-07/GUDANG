@@ -1,12 +1,14 @@
 import { Router } from 'express';
 import { prisma } from '../lib/prisma.js';
-import { authenticateToken, AuthRequest } from '../middleware/auth.js';
+import { authenticateToken, requireWriteAccess, AuthRequest } from '../middleware/auth.js';
+import { normalizeBody, isRole } from '../../src/utils/text.js';
 
 const router = Router();
 router.use(authenticateToken);
 
 const tenantWhere = (req: AuthRequest) => {
-  if (req.user?.role === 'superadmin') return {};
+  if (isRole(req.user?.role, 'superadmin')) return {};
+  if (isRole(req.user?.role, 'pengawas')) return {};
   return { companyId: req.user?.companyId };
 };
 
@@ -24,10 +26,11 @@ router.get('/', async (req: AuthRequest, res) => {
   }
 });
 
-router.post('/', async (req: AuthRequest, res) => {
+router.post('/', requireWriteAccess, async (req: AuthRequest, res) => {
   try {
-    const { name, plateNumber, odometer, oilChangeInterval, serviceInterval, companyId } = req.body;
-    const targetCompanyId = req.user?.role === 'superadmin' 
+    const normalized = normalizeBody(req.body);
+    const { name, plateNumber, odometer, oilChangeInterval, serviceInterval, companyId } = normalized;
+    const targetCompanyId = isRole(req.user?.role, 'superadmin') 
       ? (companyId || req.user?.companyId) 
       : req.user?.companyId;
 
@@ -54,7 +57,7 @@ router.post('/', async (req: AuthRequest, res) => {
       data: {
         adminId: req.user!.id,
         companyId: targetCompanyId,
-        name: name.trim(),
+        name,
         plateNumber: plateNumber.trim().toUpperCase(),
         status: 'Tersedia',
         odometer: initialOdometer,
@@ -71,7 +74,7 @@ router.post('/', async (req: AuthRequest, res) => {
   }
 });
 
-router.patch('/:id/status', async (req: AuthRequest, res) => {
+router.patch('/:id/status', requireWriteAccess, async (req: AuthRequest, res) => {
   try {
     const item = await prisma.vehicleItem.findFirst({ where: { id: req.params.id, ...tenantWhere(req) } });
     if (!item) {
@@ -89,7 +92,7 @@ router.patch('/:id/status', async (req: AuthRequest, res) => {
   }
 });
 
-router.delete('/:id', async (req: AuthRequest, res) => {
+router.delete('/:id', requireWriteAccess, async (req: AuthRequest, res) => {
   try {
     const item = await prisma.vehicleItem.findFirst({ where: { id: req.params.id, ...tenantWhere(req) } });
     if (!item) {
@@ -118,9 +121,10 @@ router.get('/logs', async (req: AuthRequest, res) => {
   }
 });
 
-router.post('/logs', async (req: AuthRequest, res) => {
+router.post('/logs', requireWriteAccess, async (req: AuthRequest, res) => {
   try {
-    const { vehicleId, driver, purpose, startOdometer } = req.body;
+    const normalized = normalizeBody(req.body);
+    const { vehicleId, driver, purpose, startOdometer } = normalized;
     const result = await prisma.$transaction(async (tx) => {
       const v = await tx.vehicleItem.findUnique({ where: { id: vehicleId } });
       if (!v) throw new Error('Vehicle not found');
@@ -164,7 +168,7 @@ router.post('/logs', async (req: AuthRequest, res) => {
   }
 });
 
-router.patch('/logs/:logId/finish', async (req: AuthRequest, res) => {
+router.patch('/logs/:logId/finish', requireWriteAccess, async (req: AuthRequest, res) => {
   try {
     const { endOdometer } = req.body;
     const log = await prisma.vehicleLog.findUnique({ where: { id: req.params.logId } });
@@ -217,9 +221,10 @@ router.get('/needs', async (req: AuthRequest, res) => {
   }
 });
 
-router.post('/needs', async (req: AuthRequest, res) => {
+router.post('/needs', requireWriteAccess, async (req: AuthRequest, res) => {
   try {
-    const { vehicleId, type, description, cost, pic } = req.body;
+    const normalized = normalizeBody(req.body);
+    const { vehicleId, type, description, cost, pic } = normalized;
     const v = await prisma.vehicleItem.findUnique({ where: { id: vehicleId } });
     if (!v) {
       res.status(404).json({ message: 'Vehicle not found' });

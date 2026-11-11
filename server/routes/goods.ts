@@ -1,12 +1,14 @@
 import { Router } from 'express';
 import { prisma } from '../lib/prisma.js';
-import { authenticateToken, AuthRequest } from '../middleware/auth.js';
+import { authenticateToken, requireWriteAccess, AuthRequest } from '../middleware/auth.js';
+import { normalizeBody, isRole } from '../../src/utils/text.js';
 
 const router = Router();
 router.use(authenticateToken);
 
 const tenantWhere = (req: AuthRequest) => {
-  if (req.user?.role === 'superadmin') return {};
+  if (isRole(req.user?.role, 'superadmin')) return {};
+  if (isRole(req.user?.role, 'pengawas')) return {};
   return { companyId: req.user?.companyId };
 };
 
@@ -24,10 +26,11 @@ router.get('/', async (req: AuthRequest, res) => {
   }
 });
 
-router.post('/', async (req: AuthRequest, res) => {
+router.post('/', requireWriteAccess, async (req: AuthRequest, res) => {
   try {
-    const { name, category, stock, minStock, unit, companyId } = req.body;
-    const targetCompanyId = req.user?.role === 'superadmin' 
+    const normalized = normalizeBody(req.body);
+    const { name, category, stock, minStock, unit, companyId } = normalized;
+    const targetCompanyId = isRole(req.user?.role, 'superadmin') 
       ? (companyId || req.user?.companyId) 
       : req.user?.companyId;
 
@@ -40,7 +43,7 @@ router.post('/', async (req: AuthRequest, res) => {
       data: {
         adminId: req.user!.id,
         companyId: targetCompanyId,
-        name: name.trim(),
+        name,
         category,
         stock: Math.max(0, Number(stock) || 0),
         minStock: Math.max(0, Number(minStock) || 0),
@@ -54,7 +57,7 @@ router.post('/', async (req: AuthRequest, res) => {
   }
 });
 
-router.delete('/:id', async (req: AuthRequest, res) => {
+router.delete('/:id', requireWriteAccess, async (req: AuthRequest, res) => {
   try {
     const item = await prisma.goodsItem.findFirst({ where: { id: req.params.id, ...tenantWhere(req) } });
     if (!item) {
@@ -83,9 +86,10 @@ router.get('/transactions', async (req: AuthRequest, res) => {
   }
 });
 
-router.post('/transactions', async (req: AuthRequest, res) => {
+router.post('/transactions', requireWriteAccess, async (req: AuthRequest, res) => {
   try {
-    const { itemId, type, quantity, notes, pic } = req.body;
+    const normalized = normalizeBody(req.body);
+    const { itemId, type, quantity, notes, pic } = normalized;
     const qty = Number(quantity);
     if (isNaN(qty) || qty <= 0) {
       res.status(400).json({ message: 'Jumlah kuantitas tidak valid' });

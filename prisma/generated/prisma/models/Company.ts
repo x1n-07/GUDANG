@@ -166,12 +166,12 @@ export type CompanyWhereInput = {
   id?: Prisma.StringFilter<"Company"> | string
   name?: Prisma.StringFilter<"Company"> | string
   disabled?: Prisma.BoolFilter<"Company"> | boolean
-  users?: Prisma.UserListRelationFilter
-  technicians?: Prisma.TechnicianListRelationFilter
-  goods?: Prisma.GoodsItemListRelationFilter
-  goodsTransactions?: Prisma.GoodsTransactionListRelationFilter
   equipment?: Prisma.EquipmentItemListRelationFilter
   equipmentLogs?: Prisma.EquipmentLogListRelationFilter
+  goods?: Prisma.GoodsItemListRelationFilter
+  goodsTransactions?: Prisma.GoodsTransactionListRelationFilter
+  technicians?: Prisma.TechnicianListRelationFilter
+  users?: Prisma.UserListRelationFilter
   vehicles?: Prisma.VehicleItemListRelationFilter
   vehicleLogs?: Prisma.VehicleLogListRelationFilter
   vehicleNeeds?: Prisma.VehicleNeedListRelationFilter
@@ -181,12 +181,12 @@ export type CompanyOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   disabled?: Prisma.SortOrder
-  users?: Prisma.UserOrderByRelationAggregateInput
-  technicians?: Prisma.TechnicianOrderByRelationAggregateInput
-  goods?: Prisma.GoodsItemOrderByRelationAggregateInput
-  goodsTransactions?: Prisma.GoodsTransactionOrderByRelationAggregateInput
   equipment?: Prisma.EquipmentItemOrderByRelationAggregateInput
   equipmentLogs?: Prisma.EquipmentLogOrderByRelationAggregateInput
+  goods?: Prisma.GoodsItemOrderByRelationAggregateInput
+  goodsTransactions?: Prisma.GoodsTransactionOrderByRelationAggregateInput
+  technicians?: Prisma.TechnicianOrderByRelationAggregateInput
+  users?: Prisma.UserOrderByRelationAggregateInput
   vehicles?: Prisma.VehicleItemOrderByRelationAggregateInput
   vehicleLogs?: Prisma.VehicleLogOrderByRelationAggregateInput
   vehicleNeeds?: Prisma.VehicleNeedOrderByRelationAggregateInput
@@ -199,12 +199,12 @@ export type CompanyWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.CompanyWhereInput | Prisma.CompanyWhereInput[]
   name?: Prisma.StringFilter<"Company"> | string
   disabled?: Prisma.BoolFilter<"Company"> | boolean
-  users?: Prisma.UserListRelationFilter
-  technicians?: Prisma.TechnicianListRelationFilter
-  goods?: Prisma.GoodsItemListRelationFilter
-  goodsTransactions?: Prisma.GoodsTransactionListRelationFilter
   equipment?: Prisma.EquipmentItemListRelationFilter
   equipmentLogs?: Prisma.EquipmentLogListRelationFilter
+  goods?: Prisma.GoodsItemListRelationFilter
+  goodsTransactions?: Prisma.GoodsTransactionListRelationFilter
+  technicians?: Prisma.TechnicianListRelationFilter
+  users?: Prisma.UserListRelationFilter
   vehicles?: Prisma.VehicleItemListRelationFilter
   vehicleLogs?: Prisma.VehicleLogListRelationFilter
   vehicleNeeds?: Prisma.VehicleNeedListRelationFilter
@@ -232,12 +232,12 @@ export type CompanyCreateInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
-  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
-  goods?: Prisma.GoodsItemCreateNestedManyWithoutCompanyInput
-  goodsTransactions?: Prisma.GoodsTransactionCreateNestedManyWithoutCompanyInput
   equipment?: Prisma.EquipmentItemCreateNestedManyWithoutCompanyInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCompanyInput
+  goods?: Prisma.GoodsItemCreateNestedManyWithoutCompanyInput
+  goodsTransactions?: Prisma.GoodsTransactionCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedCreateNestedManyWithoutCompanyInput
@@ -247,12 +247,12 @@ export type CompanyUncheckedCreateInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
-  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
-  goods?: Prisma.GoodsItemUncheckedCreateNestedManyWithoutCompanyInput
-  goodsTransactions?: Prisma.GoodsTransactionUncheckedCreateNestedManyWithoutCompanyInput
   equipment?: Prisma.EquipmentItemUncheckedCreateNestedManyWithoutCompanyInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCompanyInput
+  goods?: Prisma.GoodsItemUncheckedCreateNestedManyWithoutCompanyInput
+  goodsTransactions?: Prisma.GoodsTransactionUncheckedCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemUncheckedCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogUncheckedCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedCreateNestedManyWithoutCompanyInput
@@ -262,12 +262,12 @@ export type CompanyUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
-  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
-  goods?: Prisma.GoodsItemUpdateManyWithoutCompanyNestedInput
-  goodsTransactions?: Prisma.GoodsTransactionUpdateManyWithoutCompanyNestedInput
   equipment?: Prisma.EquipmentItemUpdateManyWithoutCompanyNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCompanyNestedInput
+  goods?: Prisma.GoodsItemUpdateManyWithoutCompanyNestedInput
+  goodsTransactions?: Prisma.GoodsTransactionUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUpdateManyWithoutCompanyNestedInput
@@ -277,12 +277,12 @@ export type CompanyUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
-  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
-  goods?: Prisma.GoodsItemUncheckedUpdateManyWithoutCompanyNestedInput
-  goodsTransactions?: Prisma.GoodsTransactionUncheckedUpdateManyWithoutCompanyNestedInput
   equipment?: Prisma.EquipmentItemUncheckedUpdateManyWithoutCompanyNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCompanyNestedInput
+  goods?: Prisma.GoodsItemUncheckedUpdateManyWithoutCompanyNestedInput
+  goodsTransactions?: Prisma.GoodsTransactionUncheckedUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedUpdateManyWithoutCompanyNestedInput
@@ -466,11 +466,11 @@ export type CompanyCreateWithoutUsersInput = {
   id?: string
   name: string
   disabled?: boolean
-  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
-  goods?: Prisma.GoodsItemCreateNestedManyWithoutCompanyInput
-  goodsTransactions?: Prisma.GoodsTransactionCreateNestedManyWithoutCompanyInput
   equipment?: Prisma.EquipmentItemCreateNestedManyWithoutCompanyInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCompanyInput
+  goods?: Prisma.GoodsItemCreateNestedManyWithoutCompanyInput
+  goodsTransactions?: Prisma.GoodsTransactionCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedCreateNestedManyWithoutCompanyInput
@@ -480,11 +480,11 @@ export type CompanyUncheckedCreateWithoutUsersInput = {
   id?: string
   name: string
   disabled?: boolean
-  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
-  goods?: Prisma.GoodsItemUncheckedCreateNestedManyWithoutCompanyInput
-  goodsTransactions?: Prisma.GoodsTransactionUncheckedCreateNestedManyWithoutCompanyInput
   equipment?: Prisma.EquipmentItemUncheckedCreateNestedManyWithoutCompanyInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCompanyInput
+  goods?: Prisma.GoodsItemUncheckedCreateNestedManyWithoutCompanyInput
+  goodsTransactions?: Prisma.GoodsTransactionUncheckedCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemUncheckedCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogUncheckedCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedCreateNestedManyWithoutCompanyInput
@@ -510,11 +510,11 @@ export type CompanyUpdateWithoutUsersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
-  goods?: Prisma.GoodsItemUpdateManyWithoutCompanyNestedInput
-  goodsTransactions?: Prisma.GoodsTransactionUpdateManyWithoutCompanyNestedInput
   equipment?: Prisma.EquipmentItemUpdateManyWithoutCompanyNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCompanyNestedInput
+  goods?: Prisma.GoodsItemUpdateManyWithoutCompanyNestedInput
+  goodsTransactions?: Prisma.GoodsTransactionUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUpdateManyWithoutCompanyNestedInput
@@ -524,11 +524,11 @@ export type CompanyUncheckedUpdateWithoutUsersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
-  goods?: Prisma.GoodsItemUncheckedUpdateManyWithoutCompanyNestedInput
-  goodsTransactions?: Prisma.GoodsTransactionUncheckedUpdateManyWithoutCompanyNestedInput
   equipment?: Prisma.EquipmentItemUncheckedUpdateManyWithoutCompanyNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCompanyNestedInput
+  goods?: Prisma.GoodsItemUncheckedUpdateManyWithoutCompanyNestedInput
+  goodsTransactions?: Prisma.GoodsTransactionUncheckedUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedUpdateManyWithoutCompanyNestedInput
@@ -538,11 +538,11 @@ export type CompanyCreateWithoutTechniciansInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
-  goods?: Prisma.GoodsItemCreateNestedManyWithoutCompanyInput
-  goodsTransactions?: Prisma.GoodsTransactionCreateNestedManyWithoutCompanyInput
   equipment?: Prisma.EquipmentItemCreateNestedManyWithoutCompanyInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCompanyInput
+  goods?: Prisma.GoodsItemCreateNestedManyWithoutCompanyInput
+  goodsTransactions?: Prisma.GoodsTransactionCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedCreateNestedManyWithoutCompanyInput
@@ -552,11 +552,11 @@ export type CompanyUncheckedCreateWithoutTechniciansInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
-  goods?: Prisma.GoodsItemUncheckedCreateNestedManyWithoutCompanyInput
-  goodsTransactions?: Prisma.GoodsTransactionUncheckedCreateNestedManyWithoutCompanyInput
   equipment?: Prisma.EquipmentItemUncheckedCreateNestedManyWithoutCompanyInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCompanyInput
+  goods?: Prisma.GoodsItemUncheckedCreateNestedManyWithoutCompanyInput
+  goodsTransactions?: Prisma.GoodsTransactionUncheckedCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemUncheckedCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogUncheckedCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedCreateNestedManyWithoutCompanyInput
@@ -582,11 +582,11 @@ export type CompanyUpdateWithoutTechniciansInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
-  goods?: Prisma.GoodsItemUpdateManyWithoutCompanyNestedInput
-  goodsTransactions?: Prisma.GoodsTransactionUpdateManyWithoutCompanyNestedInput
   equipment?: Prisma.EquipmentItemUpdateManyWithoutCompanyNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCompanyNestedInput
+  goods?: Prisma.GoodsItemUpdateManyWithoutCompanyNestedInput
+  goodsTransactions?: Prisma.GoodsTransactionUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUpdateManyWithoutCompanyNestedInput
@@ -596,11 +596,11 @@ export type CompanyUncheckedUpdateWithoutTechniciansInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
-  goods?: Prisma.GoodsItemUncheckedUpdateManyWithoutCompanyNestedInput
-  goodsTransactions?: Prisma.GoodsTransactionUncheckedUpdateManyWithoutCompanyNestedInput
   equipment?: Prisma.EquipmentItemUncheckedUpdateManyWithoutCompanyNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCompanyNestedInput
+  goods?: Prisma.GoodsItemUncheckedUpdateManyWithoutCompanyNestedInput
+  goodsTransactions?: Prisma.GoodsTransactionUncheckedUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedUpdateManyWithoutCompanyNestedInput
@@ -610,11 +610,11 @@ export type CompanyCreateWithoutGoodsInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
-  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
-  goodsTransactions?: Prisma.GoodsTransactionCreateNestedManyWithoutCompanyInput
   equipment?: Prisma.EquipmentItemCreateNestedManyWithoutCompanyInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCompanyInput
+  goodsTransactions?: Prisma.GoodsTransactionCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedCreateNestedManyWithoutCompanyInput
@@ -624,11 +624,11 @@ export type CompanyUncheckedCreateWithoutGoodsInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
-  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
-  goodsTransactions?: Prisma.GoodsTransactionUncheckedCreateNestedManyWithoutCompanyInput
   equipment?: Prisma.EquipmentItemUncheckedCreateNestedManyWithoutCompanyInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCompanyInput
+  goodsTransactions?: Prisma.GoodsTransactionUncheckedCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemUncheckedCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogUncheckedCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedCreateNestedManyWithoutCompanyInput
@@ -654,11 +654,11 @@ export type CompanyUpdateWithoutGoodsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
-  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
-  goodsTransactions?: Prisma.GoodsTransactionUpdateManyWithoutCompanyNestedInput
   equipment?: Prisma.EquipmentItemUpdateManyWithoutCompanyNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCompanyNestedInput
+  goodsTransactions?: Prisma.GoodsTransactionUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUpdateManyWithoutCompanyNestedInput
@@ -668,11 +668,11 @@ export type CompanyUncheckedUpdateWithoutGoodsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
-  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
-  goodsTransactions?: Prisma.GoodsTransactionUncheckedUpdateManyWithoutCompanyNestedInput
   equipment?: Prisma.EquipmentItemUncheckedUpdateManyWithoutCompanyNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCompanyNestedInput
+  goodsTransactions?: Prisma.GoodsTransactionUncheckedUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedUpdateManyWithoutCompanyNestedInput
@@ -682,11 +682,11 @@ export type CompanyCreateWithoutGoodsTransactionsInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
-  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
-  goods?: Prisma.GoodsItemCreateNestedManyWithoutCompanyInput
   equipment?: Prisma.EquipmentItemCreateNestedManyWithoutCompanyInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCompanyInput
+  goods?: Prisma.GoodsItemCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedCreateNestedManyWithoutCompanyInput
@@ -696,11 +696,11 @@ export type CompanyUncheckedCreateWithoutGoodsTransactionsInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
-  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
-  goods?: Prisma.GoodsItemUncheckedCreateNestedManyWithoutCompanyInput
   equipment?: Prisma.EquipmentItemUncheckedCreateNestedManyWithoutCompanyInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCompanyInput
+  goods?: Prisma.GoodsItemUncheckedCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemUncheckedCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogUncheckedCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedCreateNestedManyWithoutCompanyInput
@@ -726,11 +726,11 @@ export type CompanyUpdateWithoutGoodsTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
-  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
-  goods?: Prisma.GoodsItemUpdateManyWithoutCompanyNestedInput
   equipment?: Prisma.EquipmentItemUpdateManyWithoutCompanyNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCompanyNestedInput
+  goods?: Prisma.GoodsItemUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUpdateManyWithoutCompanyNestedInput
@@ -740,11 +740,11 @@ export type CompanyUncheckedUpdateWithoutGoodsTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
-  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
-  goods?: Prisma.GoodsItemUncheckedUpdateManyWithoutCompanyNestedInput
   equipment?: Prisma.EquipmentItemUncheckedUpdateManyWithoutCompanyNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCompanyNestedInput
+  goods?: Prisma.GoodsItemUncheckedUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedUpdateManyWithoutCompanyNestedInput
@@ -754,11 +754,11 @@ export type CompanyCreateWithoutEquipmentInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
-  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
+  equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCompanyInput
   goods?: Prisma.GoodsItemCreateNestedManyWithoutCompanyInput
   goodsTransactions?: Prisma.GoodsTransactionCreateNestedManyWithoutCompanyInput
-  equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedCreateNestedManyWithoutCompanyInput
@@ -768,11 +768,11 @@ export type CompanyUncheckedCreateWithoutEquipmentInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
-  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCompanyInput
   goods?: Prisma.GoodsItemUncheckedCreateNestedManyWithoutCompanyInput
   goodsTransactions?: Prisma.GoodsTransactionUncheckedCreateNestedManyWithoutCompanyInput
-  equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemUncheckedCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogUncheckedCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedCreateNestedManyWithoutCompanyInput
@@ -798,11 +798,11 @@ export type CompanyUpdateWithoutEquipmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
-  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCompanyNestedInput
   goods?: Prisma.GoodsItemUpdateManyWithoutCompanyNestedInput
   goodsTransactions?: Prisma.GoodsTransactionUpdateManyWithoutCompanyNestedInput
-  equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUpdateManyWithoutCompanyNestedInput
@@ -812,11 +812,11 @@ export type CompanyUncheckedUpdateWithoutEquipmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
-  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCompanyNestedInput
   goods?: Prisma.GoodsItemUncheckedUpdateManyWithoutCompanyNestedInput
   goodsTransactions?: Prisma.GoodsTransactionUncheckedUpdateManyWithoutCompanyNestedInput
-  equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedUpdateManyWithoutCompanyNestedInput
@@ -826,11 +826,11 @@ export type CompanyCreateWithoutEquipmentLogsInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
-  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
+  equipment?: Prisma.EquipmentItemCreateNestedManyWithoutCompanyInput
   goods?: Prisma.GoodsItemCreateNestedManyWithoutCompanyInput
   goodsTransactions?: Prisma.GoodsTransactionCreateNestedManyWithoutCompanyInput
-  equipment?: Prisma.EquipmentItemCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedCreateNestedManyWithoutCompanyInput
@@ -840,11 +840,11 @@ export type CompanyUncheckedCreateWithoutEquipmentLogsInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
-  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
+  equipment?: Prisma.EquipmentItemUncheckedCreateNestedManyWithoutCompanyInput
   goods?: Prisma.GoodsItemUncheckedCreateNestedManyWithoutCompanyInput
   goodsTransactions?: Prisma.GoodsTransactionUncheckedCreateNestedManyWithoutCompanyInput
-  equipment?: Prisma.EquipmentItemUncheckedCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemUncheckedCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogUncheckedCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedCreateNestedManyWithoutCompanyInput
@@ -870,11 +870,11 @@ export type CompanyUpdateWithoutEquipmentLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
-  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
+  equipment?: Prisma.EquipmentItemUpdateManyWithoutCompanyNestedInput
   goods?: Prisma.GoodsItemUpdateManyWithoutCompanyNestedInput
   goodsTransactions?: Prisma.GoodsTransactionUpdateManyWithoutCompanyNestedInput
-  equipment?: Prisma.EquipmentItemUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUpdateManyWithoutCompanyNestedInput
@@ -884,11 +884,11 @@ export type CompanyUncheckedUpdateWithoutEquipmentLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
-  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
+  equipment?: Prisma.EquipmentItemUncheckedUpdateManyWithoutCompanyNestedInput
   goods?: Prisma.GoodsItemUncheckedUpdateManyWithoutCompanyNestedInput
   goodsTransactions?: Prisma.GoodsTransactionUncheckedUpdateManyWithoutCompanyNestedInput
-  equipment?: Prisma.EquipmentItemUncheckedUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedUpdateManyWithoutCompanyNestedInput
@@ -898,12 +898,12 @@ export type CompanyCreateWithoutVehiclesInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
-  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
-  goods?: Prisma.GoodsItemCreateNestedManyWithoutCompanyInput
-  goodsTransactions?: Prisma.GoodsTransactionCreateNestedManyWithoutCompanyInput
   equipment?: Prisma.EquipmentItemCreateNestedManyWithoutCompanyInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCompanyInput
+  goods?: Prisma.GoodsItemCreateNestedManyWithoutCompanyInput
+  goodsTransactions?: Prisma.GoodsTransactionCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedCreateNestedManyWithoutCompanyInput
 }
@@ -912,12 +912,12 @@ export type CompanyUncheckedCreateWithoutVehiclesInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
-  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
-  goods?: Prisma.GoodsItemUncheckedCreateNestedManyWithoutCompanyInput
-  goodsTransactions?: Prisma.GoodsTransactionUncheckedCreateNestedManyWithoutCompanyInput
   equipment?: Prisma.EquipmentItemUncheckedCreateNestedManyWithoutCompanyInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCompanyInput
+  goods?: Prisma.GoodsItemUncheckedCreateNestedManyWithoutCompanyInput
+  goodsTransactions?: Prisma.GoodsTransactionUncheckedCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogUncheckedCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedCreateNestedManyWithoutCompanyInput
 }
@@ -942,12 +942,12 @@ export type CompanyUpdateWithoutVehiclesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
-  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
-  goods?: Prisma.GoodsItemUpdateManyWithoutCompanyNestedInput
-  goodsTransactions?: Prisma.GoodsTransactionUpdateManyWithoutCompanyNestedInput
   equipment?: Prisma.EquipmentItemUpdateManyWithoutCompanyNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCompanyNestedInput
+  goods?: Prisma.GoodsItemUpdateManyWithoutCompanyNestedInput
+  goodsTransactions?: Prisma.GoodsTransactionUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUpdateManyWithoutCompanyNestedInput
 }
@@ -956,12 +956,12 @@ export type CompanyUncheckedUpdateWithoutVehiclesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
-  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
-  goods?: Prisma.GoodsItemUncheckedUpdateManyWithoutCompanyNestedInput
-  goodsTransactions?: Prisma.GoodsTransactionUncheckedUpdateManyWithoutCompanyNestedInput
   equipment?: Prisma.EquipmentItemUncheckedUpdateManyWithoutCompanyNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCompanyNestedInput
+  goods?: Prisma.GoodsItemUncheckedUpdateManyWithoutCompanyNestedInput
+  goodsTransactions?: Prisma.GoodsTransactionUncheckedUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedUpdateManyWithoutCompanyNestedInput
 }
@@ -970,12 +970,12 @@ export type CompanyCreateWithoutVehicleLogsInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
-  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
-  goods?: Prisma.GoodsItemCreateNestedManyWithoutCompanyInput
-  goodsTransactions?: Prisma.GoodsTransactionCreateNestedManyWithoutCompanyInput
   equipment?: Prisma.EquipmentItemCreateNestedManyWithoutCompanyInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCompanyInput
+  goods?: Prisma.GoodsItemCreateNestedManyWithoutCompanyInput
+  goodsTransactions?: Prisma.GoodsTransactionCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedCreateNestedManyWithoutCompanyInput
 }
@@ -984,12 +984,12 @@ export type CompanyUncheckedCreateWithoutVehicleLogsInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
-  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
-  goods?: Prisma.GoodsItemUncheckedCreateNestedManyWithoutCompanyInput
-  goodsTransactions?: Prisma.GoodsTransactionUncheckedCreateNestedManyWithoutCompanyInput
   equipment?: Prisma.EquipmentItemUncheckedCreateNestedManyWithoutCompanyInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCompanyInput
+  goods?: Prisma.GoodsItemUncheckedCreateNestedManyWithoutCompanyInput
+  goodsTransactions?: Prisma.GoodsTransactionUncheckedCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemUncheckedCreateNestedManyWithoutCompanyInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedCreateNestedManyWithoutCompanyInput
 }
@@ -1014,12 +1014,12 @@ export type CompanyUpdateWithoutVehicleLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
-  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
-  goods?: Prisma.GoodsItemUpdateManyWithoutCompanyNestedInput
-  goodsTransactions?: Prisma.GoodsTransactionUpdateManyWithoutCompanyNestedInput
   equipment?: Prisma.EquipmentItemUpdateManyWithoutCompanyNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCompanyNestedInput
+  goods?: Prisma.GoodsItemUpdateManyWithoutCompanyNestedInput
+  goodsTransactions?: Prisma.GoodsTransactionUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUpdateManyWithoutCompanyNestedInput
 }
@@ -1028,12 +1028,12 @@ export type CompanyUncheckedUpdateWithoutVehicleLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
-  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
-  goods?: Prisma.GoodsItemUncheckedUpdateManyWithoutCompanyNestedInput
-  goodsTransactions?: Prisma.GoodsTransactionUncheckedUpdateManyWithoutCompanyNestedInput
   equipment?: Prisma.EquipmentItemUncheckedUpdateManyWithoutCompanyNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCompanyNestedInput
+  goods?: Prisma.GoodsItemUncheckedUpdateManyWithoutCompanyNestedInput
+  goodsTransactions?: Prisma.GoodsTransactionUncheckedUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleNeeds?: Prisma.VehicleNeedUncheckedUpdateManyWithoutCompanyNestedInput
 }
@@ -1042,12 +1042,12 @@ export type CompanyCreateWithoutVehicleNeedsInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
-  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
-  goods?: Prisma.GoodsItemCreateNestedManyWithoutCompanyInput
-  goodsTransactions?: Prisma.GoodsTransactionCreateNestedManyWithoutCompanyInput
   equipment?: Prisma.EquipmentItemCreateNestedManyWithoutCompanyInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutCompanyInput
+  goods?: Prisma.GoodsItemCreateNestedManyWithoutCompanyInput
+  goodsTransactions?: Prisma.GoodsTransactionCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogCreateNestedManyWithoutCompanyInput
 }
@@ -1056,12 +1056,12 @@ export type CompanyUncheckedCreateWithoutVehicleNeedsInput = {
   id?: string
   name: string
   disabled?: boolean
-  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
-  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
-  goods?: Prisma.GoodsItemUncheckedCreateNestedManyWithoutCompanyInput
-  goodsTransactions?: Prisma.GoodsTransactionUncheckedCreateNestedManyWithoutCompanyInput
   equipment?: Prisma.EquipmentItemUncheckedCreateNestedManyWithoutCompanyInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutCompanyInput
+  goods?: Prisma.GoodsItemUncheckedCreateNestedManyWithoutCompanyInput
+  goodsTransactions?: Prisma.GoodsTransactionUncheckedCreateNestedManyWithoutCompanyInput
+  technicians?: Prisma.TechnicianUncheckedCreateNestedManyWithoutCompanyInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutCompanyInput
   vehicles?: Prisma.VehicleItemUncheckedCreateNestedManyWithoutCompanyInput
   vehicleLogs?: Prisma.VehicleLogUncheckedCreateNestedManyWithoutCompanyInput
 }
@@ -1086,12 +1086,12 @@ export type CompanyUpdateWithoutVehicleNeedsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
-  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
-  goods?: Prisma.GoodsItemUpdateManyWithoutCompanyNestedInput
-  goodsTransactions?: Prisma.GoodsTransactionUpdateManyWithoutCompanyNestedInput
   equipment?: Prisma.EquipmentItemUpdateManyWithoutCompanyNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutCompanyNestedInput
+  goods?: Prisma.GoodsItemUpdateManyWithoutCompanyNestedInput
+  goodsTransactions?: Prisma.GoodsTransactionUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUpdateManyWithoutCompanyNestedInput
 }
@@ -1100,12 +1100,12 @@ export type CompanyUncheckedUpdateWithoutVehicleNeedsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   disabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
-  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
-  goods?: Prisma.GoodsItemUncheckedUpdateManyWithoutCompanyNestedInput
-  goodsTransactions?: Prisma.GoodsTransactionUncheckedUpdateManyWithoutCompanyNestedInput
   equipment?: Prisma.EquipmentItemUncheckedUpdateManyWithoutCompanyNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutCompanyNestedInput
+  goods?: Prisma.GoodsItemUncheckedUpdateManyWithoutCompanyNestedInput
+  goodsTransactions?: Prisma.GoodsTransactionUncheckedUpdateManyWithoutCompanyNestedInput
+  technicians?: Prisma.TechnicianUncheckedUpdateManyWithoutCompanyNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutCompanyNestedInput
   vehicles?: Prisma.VehicleItemUncheckedUpdateManyWithoutCompanyNestedInput
   vehicleLogs?: Prisma.VehicleLogUncheckedUpdateManyWithoutCompanyNestedInput
 }
@@ -1116,24 +1116,24 @@ export type CompanyUncheckedUpdateWithoutVehicleNeedsInput = {
  */
 
 export type CompanyCountOutputType = {
-  users: number
-  technicians: number
-  goods: number
-  goodsTransactions: number
   equipment: number
   equipmentLogs: number
+  goods: number
+  goodsTransactions: number
+  technicians: number
+  users: number
   vehicles: number
   vehicleLogs: number
   vehicleNeeds: number
 }
 
 export type CompanyCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  users?: boolean | CompanyCountOutputTypeCountUsersArgs
-  technicians?: boolean | CompanyCountOutputTypeCountTechniciansArgs
-  goods?: boolean | CompanyCountOutputTypeCountGoodsArgs
-  goodsTransactions?: boolean | CompanyCountOutputTypeCountGoodsTransactionsArgs
   equipment?: boolean | CompanyCountOutputTypeCountEquipmentArgs
   equipmentLogs?: boolean | CompanyCountOutputTypeCountEquipmentLogsArgs
+  goods?: boolean | CompanyCountOutputTypeCountGoodsArgs
+  goodsTransactions?: boolean | CompanyCountOutputTypeCountGoodsTransactionsArgs
+  technicians?: boolean | CompanyCountOutputTypeCountTechniciansArgs
+  users?: boolean | CompanyCountOutputTypeCountUsersArgs
   vehicles?: boolean | CompanyCountOutputTypeCountVehiclesArgs
   vehicleLogs?: boolean | CompanyCountOutputTypeCountVehicleLogsArgs
   vehicleNeeds?: boolean | CompanyCountOutputTypeCountVehicleNeedsArgs
@@ -1152,15 +1152,15 @@ export type CompanyCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
 /**
  * CompanyCountOutputType without action
  */
-export type CompanyCountOutputTypeCountUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.UserWhereInput
+export type CompanyCountOutputTypeCountEquipmentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EquipmentItemWhereInput
 }
 
 /**
  * CompanyCountOutputType without action
  */
-export type CompanyCountOutputTypeCountTechniciansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.TechnicianWhereInput
+export type CompanyCountOutputTypeCountEquipmentLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EquipmentLogWhereInput
 }
 
 /**
@@ -1180,15 +1180,15 @@ export type CompanyCountOutputTypeCountGoodsTransactionsArgs<ExtArgs extends run
 /**
  * CompanyCountOutputType without action
  */
-export type CompanyCountOutputTypeCountEquipmentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.EquipmentItemWhereInput
+export type CompanyCountOutputTypeCountTechniciansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TechnicianWhereInput
 }
 
 /**
  * CompanyCountOutputType without action
  */
-export type CompanyCountOutputTypeCountEquipmentLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.EquipmentLogWhereInput
+export type CompanyCountOutputTypeCountUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserWhereInput
 }
 
 /**
@@ -1217,12 +1217,12 @@ export type CompanySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   name?: boolean
   disabled?: boolean
-  users?: boolean | Prisma.Company$usersArgs<ExtArgs>
-  technicians?: boolean | Prisma.Company$techniciansArgs<ExtArgs>
-  goods?: boolean | Prisma.Company$goodsArgs<ExtArgs>
-  goodsTransactions?: boolean | Prisma.Company$goodsTransactionsArgs<ExtArgs>
   equipment?: boolean | Prisma.Company$equipmentArgs<ExtArgs>
   equipmentLogs?: boolean | Prisma.Company$equipmentLogsArgs<ExtArgs>
+  goods?: boolean | Prisma.Company$goodsArgs<ExtArgs>
+  goodsTransactions?: boolean | Prisma.Company$goodsTransactionsArgs<ExtArgs>
+  technicians?: boolean | Prisma.Company$techniciansArgs<ExtArgs>
+  users?: boolean | Prisma.Company$usersArgs<ExtArgs>
   vehicles?: boolean | Prisma.Company$vehiclesArgs<ExtArgs>
   vehicleLogs?: boolean | Prisma.Company$vehicleLogsArgs<ExtArgs>
   vehicleNeeds?: boolean | Prisma.Company$vehicleNeedsArgs<ExtArgs>
@@ -1249,12 +1249,12 @@ export type CompanySelectScalar = {
 
 export type CompanyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "disabled", ExtArgs["result"]["company"]>
 export type CompanyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  users?: boolean | Prisma.Company$usersArgs<ExtArgs>
-  technicians?: boolean | Prisma.Company$techniciansArgs<ExtArgs>
-  goods?: boolean | Prisma.Company$goodsArgs<ExtArgs>
-  goodsTransactions?: boolean | Prisma.Company$goodsTransactionsArgs<ExtArgs>
   equipment?: boolean | Prisma.Company$equipmentArgs<ExtArgs>
   equipmentLogs?: boolean | Prisma.Company$equipmentLogsArgs<ExtArgs>
+  goods?: boolean | Prisma.Company$goodsArgs<ExtArgs>
+  goodsTransactions?: boolean | Prisma.Company$goodsTransactionsArgs<ExtArgs>
+  technicians?: boolean | Prisma.Company$techniciansArgs<ExtArgs>
+  users?: boolean | Prisma.Company$usersArgs<ExtArgs>
   vehicles?: boolean | Prisma.Company$vehiclesArgs<ExtArgs>
   vehicleLogs?: boolean | Prisma.Company$vehicleLogsArgs<ExtArgs>
   vehicleNeeds?: boolean | Prisma.Company$vehicleNeedsArgs<ExtArgs>
@@ -1266,12 +1266,12 @@ export type CompanyIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
 export type $CompanyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Company"
   objects: {
-    users: Prisma.$UserPayload<ExtArgs>[]
-    technicians: Prisma.$TechnicianPayload<ExtArgs>[]
-    goods: Prisma.$GoodsItemPayload<ExtArgs>[]
-    goodsTransactions: Prisma.$GoodsTransactionPayload<ExtArgs>[]
     equipment: Prisma.$EquipmentItemPayload<ExtArgs>[]
     equipmentLogs: Prisma.$EquipmentLogPayload<ExtArgs>[]
+    goods: Prisma.$GoodsItemPayload<ExtArgs>[]
+    goodsTransactions: Prisma.$GoodsTransactionPayload<ExtArgs>[]
+    technicians: Prisma.$TechnicianPayload<ExtArgs>[]
+    users: Prisma.$UserPayload<ExtArgs>[]
     vehicles: Prisma.$VehicleItemPayload<ExtArgs>[]
     vehicleLogs: Prisma.$VehicleLogPayload<ExtArgs>[]
     vehicleNeeds: Prisma.$VehicleNeedPayload<ExtArgs>[]
@@ -1674,12 +1674,12 @@ readonly fields: CompanyFieldRefs;
  */
 export interface Prisma__CompanyClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  users<T extends Prisma.Company$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  technicians<T extends Prisma.Company$techniciansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$techniciansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TechnicianPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  goods<T extends Prisma.Company$goodsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$goodsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GoodsItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  goodsTransactions<T extends Prisma.Company$goodsTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$goodsTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GoodsTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   equipment<T extends Prisma.Company$equipmentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$equipmentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EquipmentItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   equipmentLogs<T extends Prisma.Company$equipmentLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$equipmentLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EquipmentLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  goods<T extends Prisma.Company$goodsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$goodsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GoodsItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  goodsTransactions<T extends Prisma.Company$goodsTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$goodsTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GoodsTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  technicians<T extends Prisma.Company$techniciansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$techniciansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TechnicianPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  users<T extends Prisma.Company$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   vehicles<T extends Prisma.Company$vehiclesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$vehiclesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VehicleItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   vehicleLogs<T extends Prisma.Company$vehicleLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$vehicleLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VehicleLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   vehicleNeeds<T extends Prisma.Company$vehicleNeedsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$vehicleNeedsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VehicleNeedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2106,51 +2106,51 @@ export type CompanyDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
- * Company.users
+ * Company.equipment
  */
-export type Company$usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Company$equipmentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the User
+   * Select specific fields to fetch from the EquipmentItem
    */
-  select?: Prisma.UserSelect<ExtArgs> | null
+  select?: Prisma.EquipmentItemSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the User
+   * Omit specific fields from the EquipmentItem
    */
-  omit?: Prisma.UserOmit<ExtArgs> | null
+  omit?: Prisma.EquipmentItemOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.UserInclude<ExtArgs> | null
-  where?: Prisma.UserWhereInput
-  orderBy?: Prisma.UserOrderByWithRelationInput | Prisma.UserOrderByWithRelationInput[]
-  cursor?: Prisma.UserWhereUniqueInput
+  include?: Prisma.EquipmentItemInclude<ExtArgs> | null
+  where?: Prisma.EquipmentItemWhereInput
+  orderBy?: Prisma.EquipmentItemOrderByWithRelationInput | Prisma.EquipmentItemOrderByWithRelationInput[]
+  cursor?: Prisma.EquipmentItemWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.UserScalarFieldEnum | Prisma.UserScalarFieldEnum[]
+  distinct?: Prisma.EquipmentItemScalarFieldEnum | Prisma.EquipmentItemScalarFieldEnum[]
 }
 
 /**
- * Company.technicians
+ * Company.equipmentLogs
  */
-export type Company$techniciansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Company$equipmentLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Technician
+   * Select specific fields to fetch from the EquipmentLog
    */
-  select?: Prisma.TechnicianSelect<ExtArgs> | null
+  select?: Prisma.EquipmentLogSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Technician
+   * Omit specific fields from the EquipmentLog
    */
-  omit?: Prisma.TechnicianOmit<ExtArgs> | null
+  omit?: Prisma.EquipmentLogOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.TechnicianInclude<ExtArgs> | null
-  where?: Prisma.TechnicianWhereInput
-  orderBy?: Prisma.TechnicianOrderByWithRelationInput | Prisma.TechnicianOrderByWithRelationInput[]
-  cursor?: Prisma.TechnicianWhereUniqueInput
+  include?: Prisma.EquipmentLogInclude<ExtArgs> | null
+  where?: Prisma.EquipmentLogWhereInput
+  orderBy?: Prisma.EquipmentLogOrderByWithRelationInput | Prisma.EquipmentLogOrderByWithRelationInput[]
+  cursor?: Prisma.EquipmentLogWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.TechnicianScalarFieldEnum | Prisma.TechnicianScalarFieldEnum[]
+  distinct?: Prisma.EquipmentLogScalarFieldEnum | Prisma.EquipmentLogScalarFieldEnum[]
 }
 
 /**
@@ -2202,51 +2202,51 @@ export type Company$goodsTransactionsArgs<ExtArgs extends runtime.Types.Extensio
 }
 
 /**
- * Company.equipment
+ * Company.technicians
  */
-export type Company$equipmentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Company$techniciansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the EquipmentItem
+   * Select specific fields to fetch from the Technician
    */
-  select?: Prisma.EquipmentItemSelect<ExtArgs> | null
+  select?: Prisma.TechnicianSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the EquipmentItem
+   * Omit specific fields from the Technician
    */
-  omit?: Prisma.EquipmentItemOmit<ExtArgs> | null
+  omit?: Prisma.TechnicianOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.EquipmentItemInclude<ExtArgs> | null
-  where?: Prisma.EquipmentItemWhereInput
-  orderBy?: Prisma.EquipmentItemOrderByWithRelationInput | Prisma.EquipmentItemOrderByWithRelationInput[]
-  cursor?: Prisma.EquipmentItemWhereUniqueInput
+  include?: Prisma.TechnicianInclude<ExtArgs> | null
+  where?: Prisma.TechnicianWhereInput
+  orderBy?: Prisma.TechnicianOrderByWithRelationInput | Prisma.TechnicianOrderByWithRelationInput[]
+  cursor?: Prisma.TechnicianWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.EquipmentItemScalarFieldEnum | Prisma.EquipmentItemScalarFieldEnum[]
+  distinct?: Prisma.TechnicianScalarFieldEnum | Prisma.TechnicianScalarFieldEnum[]
 }
 
 /**
- * Company.equipmentLogs
+ * Company.users
  */
-export type Company$equipmentLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Company$usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the EquipmentLog
+   * Select specific fields to fetch from the User
    */
-  select?: Prisma.EquipmentLogSelect<ExtArgs> | null
+  select?: Prisma.UserSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the EquipmentLog
+   * Omit specific fields from the User
    */
-  omit?: Prisma.EquipmentLogOmit<ExtArgs> | null
+  omit?: Prisma.UserOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.EquipmentLogInclude<ExtArgs> | null
-  where?: Prisma.EquipmentLogWhereInput
-  orderBy?: Prisma.EquipmentLogOrderByWithRelationInput | Prisma.EquipmentLogOrderByWithRelationInput[]
-  cursor?: Prisma.EquipmentLogWhereUniqueInput
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+  orderBy?: Prisma.UserOrderByWithRelationInput | Prisma.UserOrderByWithRelationInput[]
+  cursor?: Prisma.UserWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.EquipmentLogScalarFieldEnum | Prisma.EquipmentLogScalarFieldEnum[]
+  distinct?: Prisma.UserScalarFieldEnum | Prisma.UserScalarFieldEnum[]
 }
 
 /**

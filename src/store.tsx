@@ -23,6 +23,8 @@ interface AppState {
   vehicleNeeds: VehicleNeed[];
   technicians: Technician[];
   loading: boolean;
+  // Branch being monitored (used by pengawas to switch branches)
+  selectedBranchId: string;
   // Navigation history
   navHistory: string[];
   currentNavIndex: number;
@@ -72,12 +74,16 @@ interface AppContextType extends AppState {
   updateUser: (id: string, updates: Partial<Omit<User, 'id'>>) => Promise<void>;
   removeUser: (id: string) => Promise<void>;
   toggleUserDisabled: (id: string, disabled: boolean) => Promise<void>;
+  
+  // Branch selection
+  setSelectedBranchId: (id: string) => void;
 }
 
 const getInitialState = (): AppState => {
   const storedUser = localStorage.getItem('warehouse_user');
   const storedHistory = localStorage.getItem('navHistory');
   const storedIndex = localStorage.getItem('currentNavIndex');
+  const storedBranchId = localStorage.getItem('selectedBranchId');
   
   return {
     users: [],
@@ -92,6 +98,7 @@ const getInitialState = (): AppState => {
     vehicleNeeds: [],
     technicians: [],
     loading: false,
+    selectedBranchId: storedUser ? (JSON.parse(storedUser)?.companyId ?? '') : '',
     navHistory: storedHistory ? JSON.parse(storedHistory) : ['dashboard'],
     currentNavIndex: storedIndex ? parseInt(storedIndex, 10) : 0,
   };
@@ -107,11 +114,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem('currentNavIndex', index.toString());
   };
 
-  const refreshData = async () => {
+  const setSelectedBranchId = async (id: string) => {
+    localStorage.setItem('selectedBranchId', id);
+    setState(prev => ({ ...prev, selectedBranchId: id }));
+    await refreshData(id);
+  };
+
+  const refreshData = async (branchId?: string) => {
     if (!state.currentUser) return;
     try {
       setState(p => ({ ...p, loading: true }));
-      const data = await apiFetchDashboard();
+      const data = await apiFetchDashboard(branchId);
       setState(prev => ({
         ...prev,
         ...data,
@@ -125,16 +138,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     if (state.currentUser) {
-      refreshData();
+      refreshData(state.selectedBranchId || undefined);
     }
   }, [state.currentUser]);
 
   const login = async (username: string, password?: string) => {
     try {
       const user = await apiLogin(username, password || '');
+      // Pengawas default ke SEMUA CABANG ('') agar bisa memantau seluruh cabang.
+      // Role lain memakai cabangnya sendiri.
+      const defaultBranchId = user.role === 'pengawas' ? '' : (user.companyId ?? '');
+      localStorage.setItem('selectedBranchId', defaultBranchId);
       setState(prev => ({ 
         ...prev, 
         currentUser: user,
+        selectedBranchId: defaultBranchId,
         navHistory: ['dashboard'],
         currentNavIndex: 0,
       }));
@@ -151,6 +169,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.removeItem('activeTab');
     localStorage.removeItem('navHistory');
     localStorage.removeItem('currentNavIndex');
+    localStorage.removeItem('selectedBranchId');
     setState({
       users: [],
       companies: [],
@@ -164,6 +183,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       vehicleNeeds: [],
       technicians: [],
       loading: false,
+      selectedBranchId: '',
       navHistory: ['dashboard'],
       currentNavIndex: 0,
     });
@@ -323,7 +343,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       addVehicleItem, removeVehicleItem, addVehicleLog, finishVehicleTrip, addVehicleNeed, updateVehicleStatus,
       addTechnician, removeTechnician,
       addCompany, removeCompany, toggleCompanyDisabled, updateCompany,
-      addUser, updateUser, removeUser, toggleUserDisabled
+      addUser, updateUser, removeUser, toggleUserDisabled,
+      setSelectedBranchId
     }}>
       {children}
     </AppContext.Provider>

@@ -1,12 +1,14 @@
 import { Router } from 'express';
 import { prisma } from '../lib/prisma.js';
-import { authenticateToken, AuthRequest } from '../middleware/auth.js';
+import { authenticateToken, requireWriteAccess, AuthRequest } from '../middleware/auth.js';
+import { normalizeBody, isRole } from '../../src/utils/text.js';
 
 const router = Router();
 router.use(authenticateToken);
 
 const tenantWhere = (req: AuthRequest) => {
-  if (req.user?.role === 'superadmin') return {};
+  if (isRole(req.user?.role, 'superadmin')) return {};
+  if (isRole(req.user?.role, 'pengawas')) return {};
   return { companyId: req.user?.companyId };
 };
 
@@ -24,10 +26,11 @@ router.get('/', async (req: AuthRequest, res) => {
   }
 });
 
-router.post('/', async (req: AuthRequest, res) => {
+router.post('/', requireWriteAccess, async (req: AuthRequest, res) => {
   try {
-    const { name, condition, companyId } = req.body;
-    const targetCompanyId = req.user?.role === 'superadmin' 
+    const normalized = normalizeBody(req.body);
+    const { name, condition, companyId } = normalized;
+    const targetCompanyId = isRole(req.user?.role, 'superadmin') 
       ? (companyId || req.user?.companyId) 
       : req.user?.companyId;
 
@@ -40,7 +43,7 @@ router.post('/', async (req: AuthRequest, res) => {
       data: {
         adminId: req.user!.id,
         companyId: targetCompanyId,
-        name: name.trim(),
+        name,
         condition: condition || 'Baik',
         status: 'Tersedia',
       },
@@ -52,7 +55,7 @@ router.post('/', async (req: AuthRequest, res) => {
   }
 });
 
-router.delete('/:id', async (req: AuthRequest, res) => {
+router.delete('/:id', requireWriteAccess, async (req: AuthRequest, res) => {
   try {
     const item = await prisma.equipmentItem.findFirst({ where: { id: req.params.id, ...tenantWhere(req) } });
     if (!item) {
@@ -67,7 +70,7 @@ router.delete('/:id', async (req: AuthRequest, res) => {
   }
 });
 
-router.patch('/:id/condition', async (req: AuthRequest, res) => {
+router.patch('/:id/condition', requireWriteAccess, async (req: AuthRequest, res) => {
   try {
     const existing = await prisma.equipmentItem.findFirst({
       where: { id: req.params.id, ...tenantWhere(req) },
@@ -101,9 +104,12 @@ router.get('/logs', async (req: AuthRequest, res) => {
   }
 });
 
-router.post('/logs', async (req: AuthRequest, res) => {
+router.post('/logs', requireWriteAccess, async (req: AuthRequest, res) => {
   try {
-    const { equipmentId, user, action, condition, notes } = req.body;
+    const normalized = normalizeBody(req.body);
+    let { equipmentId, user, action, condition, notes } = normalized;
+    action = String(action || '').toUpperCase();
+    
     if (action !== 'PINJAM' && action !== 'KEMBALI') {
       res.status(400).json({ message: 'Aksi tidak valid. Harus PINJAM atau KEMBALI' });
       return;

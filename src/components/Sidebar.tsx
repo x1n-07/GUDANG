@@ -25,7 +25,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
     : currentUser?.role === 'admin'
     ? allItems
     : currentUser?.role === 'pengawas'
-    ? allItems.filter(item => item.id !== 'technicians')
+    ? allItems   // Pengawas dapat melihat semua menu (read-only)
     : currentUser?.role === 'teknisi'
     ? allItems.filter(item => item.id === 'technicians' || item.id === 'dashboard')
     : [{ id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> }];

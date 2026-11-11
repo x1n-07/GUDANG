@@ -248,8 +248,8 @@ export type GoodsTransactionWhereInput = {
   date?: Prisma.DateTimeFilter<"GoodsTransaction"> | Date | string
   notes?: Prisma.StringFilter<"GoodsTransaction"> | string
   pic?: Prisma.StringNullableFilter<"GoodsTransaction"> | string | null
-  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   item?: Prisma.XOR<Prisma.GoodsItemScalarRelationFilter, Prisma.GoodsItemWhereInput>
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
 export type GoodsTransactionOrderByWithRelationInput = {
@@ -262,8 +262,8 @@ export type GoodsTransactionOrderByWithRelationInput = {
   date?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   pic?: Prisma.SortOrderInput | Prisma.SortOrder
-  company?: Prisma.CompanyOrderByWithRelationInput
   item?: Prisma.GoodsItemOrderByWithRelationInput
+  company?: Prisma.CompanyOrderByWithRelationInput
 }
 
 export type GoodsTransactionWhereUniqueInput = Prisma.AtLeast<{
@@ -279,8 +279,8 @@ export type GoodsTransactionWhereUniqueInput = Prisma.AtLeast<{
   date?: Prisma.DateTimeFilter<"GoodsTransaction"> | Date | string
   notes?: Prisma.StringFilter<"GoodsTransaction"> | string
   pic?: Prisma.StringNullableFilter<"GoodsTransaction"> | string | null
-  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   item?: Prisma.XOR<Prisma.GoodsItemScalarRelationFilter, Prisma.GoodsItemWhereInput>
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id">
 
 export type GoodsTransactionOrderByWithAggregationInput = {
@@ -323,8 +323,8 @@ export type GoodsTransactionCreateInput = {
   date?: Date | string
   notes: string
   pic?: string | null
-  company: Prisma.CompanyCreateNestedOneWithoutGoodsTransactionsInput
   item: Prisma.GoodsItemCreateNestedOneWithoutTransactionsInput
+  company: Prisma.CompanyCreateNestedOneWithoutGoodsTransactionsInput
 }
 
 export type GoodsTransactionUncheckedCreateInput = {
@@ -347,8 +347,8 @@ export type GoodsTransactionUpdateInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   pic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  company?: Prisma.CompanyUpdateOneRequiredWithoutGoodsTransactionsNestedInput
   item?: Prisma.GoodsItemUpdateOneRequiredWithoutTransactionsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutGoodsTransactionsNestedInput
 }
 
 export type GoodsTransactionUncheckedUpdateInput = {
@@ -748,8 +748,8 @@ export type GoodsTransactionSelect<ExtArgs extends runtime.Types.Extensions.Inte
   date?: boolean
   notes?: boolean
   pic?: boolean
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   item?: boolean | Prisma.GoodsItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["goodsTransaction"]>
 
 export type GoodsTransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -762,8 +762,8 @@ export type GoodsTransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   date?: boolean
   notes?: boolean
   pic?: boolean
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   item?: boolean | Prisma.GoodsItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["goodsTransaction"]>
 
 export type GoodsTransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -776,8 +776,8 @@ export type GoodsTransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   date?: boolean
   notes?: boolean
   pic?: boolean
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   item?: boolean | Prisma.GoodsItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["goodsTransaction"]>
 
 export type GoodsTransactionSelectScalar = {
@@ -794,23 +794,23 @@ export type GoodsTransactionSelectScalar = {
 
 export type GoodsTransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "adminId" | "companyId" | "itemId" | "type" | "quantity" | "date" | "notes" | "pic", ExtArgs["result"]["goodsTransaction"]>
 export type GoodsTransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   item?: boolean | Prisma.GoodsItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 export type GoodsTransactionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   item?: boolean | Prisma.GoodsItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 export type GoodsTransactionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   item?: boolean | Prisma.GoodsItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 
 export type $GoodsTransactionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "GoodsTransaction"
   objects: {
-    company: Prisma.$CompanyPayload<ExtArgs>
     item: Prisma.$GoodsItemPayload<ExtArgs>
+    company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1216,8 +1216,8 @@ readonly fields: GoodsTransactionFieldRefs;
  */
 export interface Prisma__GoodsTransactionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   item<T extends Prisma.GoodsItemDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GoodsItemDefaultArgs<ExtArgs>>): Prisma.Prisma__GoodsItemClient<runtime.Types.Result.GetResult<Prisma.$GoodsItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

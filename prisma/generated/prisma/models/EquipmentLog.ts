@@ -214,8 +214,8 @@ export type EquipmentLogWhereInput = {
   date?: Prisma.DateTimeFilter<"EquipmentLog"> | Date | string
   condition?: Prisma.StringFilter<"EquipmentLog"> | string
   notes?: Prisma.StringFilter<"EquipmentLog"> | string
-  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   equipment?: Prisma.XOR<Prisma.EquipmentItemScalarRelationFilter, Prisma.EquipmentItemWhereInput>
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
 export type EquipmentLogOrderByWithRelationInput = {
@@ -228,8 +228,8 @@ export type EquipmentLogOrderByWithRelationInput = {
   date?: Prisma.SortOrder
   condition?: Prisma.SortOrder
   notes?: Prisma.SortOrder
-  company?: Prisma.CompanyOrderByWithRelationInput
   equipment?: Prisma.EquipmentItemOrderByWithRelationInput
+  company?: Prisma.CompanyOrderByWithRelationInput
 }
 
 export type EquipmentLogWhereUniqueInput = Prisma.AtLeast<{
@@ -245,8 +245,8 @@ export type EquipmentLogWhereUniqueInput = Prisma.AtLeast<{
   date?: Prisma.DateTimeFilter<"EquipmentLog"> | Date | string
   condition?: Prisma.StringFilter<"EquipmentLog"> | string
   notes?: Prisma.StringFilter<"EquipmentLog"> | string
-  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   equipment?: Prisma.XOR<Prisma.EquipmentItemScalarRelationFilter, Prisma.EquipmentItemWhereInput>
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id">
 
 export type EquipmentLogOrderByWithAggregationInput = {
@@ -287,8 +287,8 @@ export type EquipmentLogCreateInput = {
   date?: Date | string
   condition: string
   notes: string
-  company: Prisma.CompanyCreateNestedOneWithoutEquipmentLogsInput
   equipment: Prisma.EquipmentItemCreateNestedOneWithoutLogsInput
+  company: Prisma.CompanyCreateNestedOneWithoutEquipmentLogsInput
 }
 
 export type EquipmentLogUncheckedCreateInput = {
@@ -311,8 +311,8 @@ export type EquipmentLogUpdateInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   condition?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.StringFieldUpdateOperationsInput | string
-  company?: Prisma.CompanyUpdateOneRequiredWithoutEquipmentLogsNestedInput
   equipment?: Prisma.EquipmentItemUpdateOneRequiredWithoutLogsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutEquipmentLogsNestedInput
 }
 
 export type EquipmentLogUncheckedUpdateInput = {
@@ -700,8 +700,8 @@ export type EquipmentLogSelect<ExtArgs extends runtime.Types.Extensions.Internal
   date?: boolean
   condition?: boolean
   notes?: boolean
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   equipment?: boolean | Prisma.EquipmentItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["equipmentLog"]>
 
 export type EquipmentLogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -714,8 +714,8 @@ export type EquipmentLogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   date?: boolean
   condition?: boolean
   notes?: boolean
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   equipment?: boolean | Prisma.EquipmentItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["equipmentLog"]>
 
 export type EquipmentLogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -728,8 +728,8 @@ export type EquipmentLogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   date?: boolean
   condition?: boolean
   notes?: boolean
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   equipment?: boolean | Prisma.EquipmentItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["equipmentLog"]>
 
 export type EquipmentLogSelectScalar = {
@@ -746,23 +746,23 @@ export type EquipmentLogSelectScalar = {
 
 export type EquipmentLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "adminId" | "companyId" | "equipmentId" | "user" | "action" | "date" | "condition" | "notes", ExtArgs["result"]["equipmentLog"]>
 export type EquipmentLogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   equipment?: boolean | Prisma.EquipmentItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 export type EquipmentLogIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   equipment?: boolean | Prisma.EquipmentItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 export type EquipmentLogIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   equipment?: boolean | Prisma.EquipmentItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 
 export type $EquipmentLogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "EquipmentLog"
   objects: {
-    company: Prisma.$CompanyPayload<ExtArgs>
     equipment: Prisma.$EquipmentItemPayload<ExtArgs>
+    company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1168,8 +1168,8 @@ readonly fields: EquipmentLogFieldRefs;
  */
 export interface Prisma__EquipmentLogClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   equipment<T extends Prisma.EquipmentItemDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EquipmentItemDefaultArgs<ExtArgs>>): Prisma.Prisma__EquipmentItemClient<runtime.Types.Result.GetResult<Prisma.$EquipmentItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

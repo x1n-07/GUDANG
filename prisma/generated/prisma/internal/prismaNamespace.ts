@@ -1320,9 +1320,9 @@ export const VehicleLogScalarFieldEnum = {
   purpose: 'purpose',
   startDate: 'startDate',
   endDate: 'endDate',
-  startOdometer: 'startOdometer',
+  status: 'status',
   endOdometer: 'endOdometer',
-  status: 'status'
+  startOdometer: 'startOdometer'
 } as const
 
 export type VehicleLogScalarFieldEnum = (typeof VehicleLogScalarFieldEnum)[keyof typeof VehicleLogScalarFieldEnum]

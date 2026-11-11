@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { prisma } from '../lib/prisma.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { isRole } from '../../src/utils/text.js';
 
 const router = Router();
 
@@ -13,7 +14,17 @@ router.post('/login', async (req, res) => {
       return;
     }
 
-    const user = await prisma.user.findUnique({ where: { username } });
+    // Try finding exact match first (standard behavior)
+    let user = await prisma.user.findUnique({ where: { username: String(username).trim() } });
+    
+    // If not found, try case-insensitive trim search (for robustness)
+    if (!user) {
+      const allUsers = await prisma.user.findMany({
+        where: { username: { contains: String(username).trim() } }
+      });
+      user = allUsers.find(u => u.username.toLowerCase() === String(username).trim().toLowerCase()) || null;
+    }
+
     if (!user) {
       res.status(401).json({ message: 'Invalid credentials' });
       return;

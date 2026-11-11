@@ -11,18 +11,18 @@ model User {
   id        String   @id @default(uuid())
   username  String   @unique
   password  String
-  role      String   // 'admin' | 'superadmin' | 'pengawas' | 'teknisi'
+  role      String
   name      String
   companyId String?
-  company   Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
   contact   String?
   disabled  Boolean  @default(false)
+  company   Company? @relation(fields: [companyId], references: [id])
 }
 
 model Company {
-  id        String   @id @default(uuid())
-  name      String
-  disabled  Boolean  @default(false)
+  id                String             @id @default(uuid())
+  name              String
+  disabled          Boolean            @default(false)
 
   // Relations
   users             User[]
@@ -36,118 +36,123 @@ model Company {
   vehicleNeeds      VehicleNeed[]
 }
 
+model ActivityLog {
+  id          String      @id @default(uuid())
+  adminId     String
+  companyId   String?
+  username    String
+  action      String      // 'LOGIN' | 'CREATE' | 'UPDATE' | 'DELETE' | 'LOGOUT'
+  entity      String      // 'GOODS' | 'EQUIPMENT' | 'VEHICLE' | 'USER' | 'COMPANY' | 'TECHNICIAN' | 'TRANSACTION'
+  description String
+  date        DateTime    @default(now())
+}
+
 model Technician {
-  id        String   @id @default(uuid())
+  id        String  @id @default(uuid())
   adminId   String
   companyId String
-  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
   name      String
   role      String
   phone     String
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
 }
 
 model GoodsItem {
-  id        String   @id @default(uuid())
-  adminId   String
-  companyId String
-  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  name      String
-  category  String
-  stock     Float
-  minStock  Float
-  unit      String
-
-  // Relations
+  id           String             @id @default(uuid())
+  adminId      String
+  companyId    String
+  name         String
+  category     String
+  stock        Float
+  minStock     Float
+  unit         String
+  company      Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
   transactions GoodsTransaction[]
 }
 
 model GoodsTransaction {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   adminId   String
   companyId String
-  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
   itemId    String
-  item      GoodsItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
-  type      String   // 'IN' | 'OUT'
+  type      String
   quantity  Float
-  date      DateTime @default(now())
+  date      DateTime  @default(now())
   notes     String
   pic       String?
+  item      GoodsItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  company   Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
 }
 
 model EquipmentItem {
-  id          String   @id @default(uuid())
+  id          String         @id @default(uuid())
   adminId     String
   companyId   String
-  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
   name        String
-  condition   String   // 'Baik' | 'Rusak Ringan' | 'Rusak Berat'
-  status      String   // 'Tersedia' | 'Dipinjam'
+  condition   String
+  status      String
   currentUser String?
-
-  // Relations
+  company     Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
   logs        EquipmentLog[]
 }
 
 model EquipmentLog {
-  id          String   @id @default(uuid())
+  id          String        @id @default(uuid())
   adminId     String
   companyId   String
-  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
   equipmentId String
-  equipment   EquipmentItem @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
   user        String
-  action      String   // 'PINJAM' | 'KEMBALI'
-  date        DateTime @default(now())
-  condition   String   // 'Baik' | 'Rusak Ringan' | 'Rusak Berat'
+  action      String
+  date        DateTime      @default(now())
+  condition   String
   notes       String
+  equipment   EquipmentItem @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+  company     Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
 }
 
 model VehicleItem {
-  id                  String   @id @default(uuid())
-  adminId             String
-  companyId           String
-  company             Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  plateNumber         String
-  name                String
-  status              String   // 'Tersedia' | 'Sedang Digunakan' | 'Perbaikan'
-  odometer            Float    @default(0)   // Current odometer reading (km)
-  lastOilChangeOdometer Float  @default(0)   // Odometer at last oil change
-  oilChangeInterval   Float    @default(5000)  // Oil change interval (km)
-  lastServiceOdometer Float    @default(0)   // Odometer at last service
-  serviceInterval     Float    @default(10000) // Service interval (km)
-
-  // Relations
-  logs        VehicleLog[]
-  needs       VehicleNeed[]
+  id                    String        @id @default(uuid())
+  adminId               String
+  companyId             String
+  plateNumber           String
+  name                  String
+  status                String
+  odometer              Float         @default(0)
+  lastOilChangeOdometer Float         @default(0)
+  oilChangeInterval     Float         @default(5000)
+  lastServiceOdometer   Float         @default(0)
+  serviceInterval       Float         @default(10000)
+  company               Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  logs                  VehicleLog[]
+  needs                 VehicleNeed[]
 }
 
 model VehicleLog {
-  id            String   @id @default(uuid())
+  id            String      @id @default(uuid())
   adminId       String
   companyId     String
-  company       Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
   vehicleId     String
-  vehicle       VehicleItem @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
   driver        String
   purpose       String
-  startDate     DateTime @default(now())
+  startDate     DateTime    @default(now())
   endDate       DateTime?
-  startOdometer Float?   // Odometer at start of trip
-  endOdometer   Float?   // Odometer at end of trip
-  status        String   // 'JALAN' | 'SELESAI'
+  status        String
+  endOdometer   Float?
+  startOdometer Float?
+  vehicle       VehicleItem @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  company       Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
 }
 
 model VehicleNeed {
-  id          String   @id @default(uuid())
+  id          String      @id @default(uuid())
   adminId     String
   companyId   String
-  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
   vehicleId   String
-  vehicle     VehicleItem @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
-  type        String   // 'BBM' | 'Servis' | 'Suku Cadang' | 'Lainnya'
+  type        String
   description String
   cost        Float
-  date        DateTime @default(now())
+  date        DateTime    @default(now())
   pic         String
+  vehicle     VehicleItem @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  company     Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
 }

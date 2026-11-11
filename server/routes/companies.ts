@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { prisma } from '../lib/prisma.js';
 import { authenticateToken, authorizeRole } from '../middleware/auth.js';
+import { normalizeBody } from '../../src/utils/text.js';
 
 const router = Router();
 router.use(authenticateToken);
@@ -19,7 +20,8 @@ router.get('/', async (_req, res) => {
 // POST create company
 router.post('/', authorizeRole(['superadmin']), async (req, res) => {
   try {
-    const { name, disabled } = req.body;
+    const normalized = normalizeBody(req.body);
+    const { name, disabled } = normalized;
     const company = await prisma.company.create({
       data: { name, disabled: disabled ?? false },
     });

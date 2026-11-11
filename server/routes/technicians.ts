@@ -1,12 +1,14 @@
 import { Router } from 'express';
 import { prisma } from '../lib/prisma.js';
-import { authenticateToken, AuthRequest } from '../middleware/auth.js';
+import { authenticateToken, requireWriteAccess, AuthRequest } from '../middleware/auth.js';
+import { normalizeBody, isRole } from '../../src/utils/text.js';
 
 const router = Router();
 router.use(authenticateToken);
 
 const tenantWhere = (req: AuthRequest) => {
-  if (req.user?.role === 'superadmin') return {};
+  if (isRole(req.user?.role, 'superadmin')) return {};
+  if (isRole(req.user?.role, 'pengawas')) return {};
   return { companyId: req.user?.companyId };
 };
 
@@ -23,10 +25,11 @@ router.get('/', async (req: AuthRequest, res) => {
   }
 });
 
-router.post('/', async (req: AuthRequest, res) => {
+router.post('/', requireWriteAccess, async (req: AuthRequest, res) => {
   try {
-    const { name, role, phone, companyId } = req.body;
-    const targetCompanyId = req.user?.role === 'superadmin' 
+    const normalized = normalizeBody(req.body);
+    const { name, role, phone, companyId } = normalized;
+    const targetCompanyId = isRole(req.user?.role, 'superadmin') 
       ? (companyId || req.user?.companyId) 
       : req.user?.companyId;
 
@@ -39,8 +42,8 @@ router.post('/', async (req: AuthRequest, res) => {
       data: {
         adminId: req.user!.id,
         companyId: targetCompanyId,
-        name: name.trim(),
-        role,
+        name,
+        role: role ? role.toUpperCase() : '',
         phone: phone || '',
       },
     });
@@ -51,7 +54,7 @@ router.post('/', async (req: AuthRequest, res) => {
   }
 });
 
-router.delete('/:id', async (req: AuthRequest, res) => {
+router.delete('/:id', requireWriteAccess, async (req: AuthRequest, res) => {
   try {
     const item = await prisma.technician.findFirst({ where: { id: req.params.id, ...tenantWhere(req) } });
     if (!item) {

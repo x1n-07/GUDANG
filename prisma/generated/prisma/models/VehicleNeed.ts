@@ -248,8 +248,8 @@ export type VehicleNeedWhereInput = {
   cost?: Prisma.FloatFilter<"VehicleNeed"> | number
   date?: Prisma.DateTimeFilter<"VehicleNeed"> | Date | string
   pic?: Prisma.StringFilter<"VehicleNeed"> | string
-  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   vehicle?: Prisma.XOR<Prisma.VehicleItemScalarRelationFilter, Prisma.VehicleItemWhereInput>
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
 
 export type VehicleNeedOrderByWithRelationInput = {
@@ -262,8 +262,8 @@ export type VehicleNeedOrderByWithRelationInput = {
   cost?: Prisma.SortOrder
   date?: Prisma.SortOrder
   pic?: Prisma.SortOrder
-  company?: Prisma.CompanyOrderByWithRelationInput
   vehicle?: Prisma.VehicleItemOrderByWithRelationInput
+  company?: Prisma.CompanyOrderByWithRelationInput
 }
 
 export type VehicleNeedWhereUniqueInput = Prisma.AtLeast<{
@@ -279,8 +279,8 @@ export type VehicleNeedWhereUniqueInput = Prisma.AtLeast<{
   cost?: Prisma.FloatFilter<"VehicleNeed"> | number
   date?: Prisma.DateTimeFilter<"VehicleNeed"> | Date | string
   pic?: Prisma.StringFilter<"VehicleNeed"> | string
-  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
   vehicle?: Prisma.XOR<Prisma.VehicleItemScalarRelationFilter, Prisma.VehicleItemWhereInput>
+  company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "id">
 
 export type VehicleNeedOrderByWithAggregationInput = {
@@ -323,8 +323,8 @@ export type VehicleNeedCreateInput = {
   cost: number
   date?: Date | string
   pic: string
-  company: Prisma.CompanyCreateNestedOneWithoutVehicleNeedsInput
   vehicle: Prisma.VehicleItemCreateNestedOneWithoutNeedsInput
+  company: Prisma.CompanyCreateNestedOneWithoutVehicleNeedsInput
 }
 
 export type VehicleNeedUncheckedCreateInput = {
@@ -347,8 +347,8 @@ export type VehicleNeedUpdateInput = {
   cost?: Prisma.FloatFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pic?: Prisma.StringFieldUpdateOperationsInput | string
-  company?: Prisma.CompanyUpdateOneRequiredWithoutVehicleNeedsNestedInput
   vehicle?: Prisma.VehicleItemUpdateOneRequiredWithoutNeedsNestedInput
+  company?: Prisma.CompanyUpdateOneRequiredWithoutVehicleNeedsNestedInput
 }
 
 export type VehicleNeedUncheckedUpdateInput = {
@@ -744,8 +744,8 @@ export type VehicleNeedSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   cost?: boolean
   date?: boolean
   pic?: boolean
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VehicleItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["vehicleNeed"]>
 
 export type VehicleNeedSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -758,8 +758,8 @@ export type VehicleNeedSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   cost?: boolean
   date?: boolean
   pic?: boolean
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VehicleItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["vehicleNeed"]>
 
 export type VehicleNeedSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -772,8 +772,8 @@ export type VehicleNeedSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   cost?: boolean
   date?: boolean
   pic?: boolean
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VehicleItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["vehicleNeed"]>
 
 export type VehicleNeedSelectScalar = {
@@ -790,23 +790,23 @@ export type VehicleNeedSelectScalar = {
 
 export type VehicleNeedOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "adminId" | "companyId" | "vehicleId" | "type" | "description" | "cost" | "date" | "pic", ExtArgs["result"]["vehicleNeed"]>
 export type VehicleNeedInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VehicleItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 export type VehicleNeedIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VehicleItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 export type VehicleNeedIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   vehicle?: boolean | Prisma.VehicleItemDefaultArgs<ExtArgs>
+  company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }
 
 export type $VehicleNeedPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "VehicleNeed"
   objects: {
-    company: Prisma.$CompanyPayload<ExtArgs>
     vehicle: Prisma.$VehicleItemPayload<ExtArgs>
+    company: Prisma.$CompanyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1212,8 +1212,8 @@ readonly fields: VehicleNeedFieldRefs;
  */
 export interface Prisma__VehicleNeedClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   vehicle<T extends Prisma.VehicleItemDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VehicleItemDefaultArgs<ExtArgs>>): Prisma.Prisma__VehicleItemClient<runtime.Types.Result.GetResult<Prisma.$VehicleItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  company<T extends Prisma.CompanyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CompanyDefaultArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

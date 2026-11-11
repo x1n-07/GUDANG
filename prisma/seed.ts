@@ -16,19 +16,19 @@ const adapter = new PrismaBetterSqlite3({
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  const hashed = await bcrypt.hash('123', 10);
+  const hashed = await bcrypt.hash('combosuper', 10);
 
   console.log('Seeding data...');
 
   // 1. Superadmin
   await prisma.user.upsert({
     where: { username: 'superadmin' },
-    update: {},
+    update: { password: hashed, role: 'SUPERADMIN' },
     create: {
       username: 'superadmin',
       password: hashed,
-      role: 'superadmin',
-      name: 'Super Administrator',
+      role: 'SUPERADMIN',
+      name: 'SUPER ADMINISTRATOR',
     },
   });
 
@@ -36,21 +36,21 @@ async function main() {
   const companyA = await prisma.company.upsert({
     where: { id: 'c1' },
     update: {},
-    create: { id: 'c1', name: 'PT Logistik A', disabled: false },
+    create: { id: 'c1', name: 'PT LOGISTIK A', disabled: false },
   });
 
   const companyB = await prisma.company.upsert({
     where: { id: 'c2' },
     update: {},
-    create: { id: 'c2', name: 'PT Logistik B', disabled: false },
+    create: { id: 'c2', name: 'PT LOGISTIK B', disabled: false },
   });
 
   // 3. Admins & Others
   const users = [
-    { username: 'admin1', role: 'admin', name: 'Admin Gudang A', companyId: companyA.id, contact: '081234567890' },
-    { username: 'admin2', role: 'admin', name: 'Admin Gudang B', companyId: companyB.id, contact: '081234567891' },
-    { username: 'peng1', role: 'pengawas', name: 'Pengawas A', companyId: companyA.id, contact: '081234567892' },
-    { username: 'tek1', role: 'teknisi', name: 'Teknisi A', companyId: companyA.id, contact: '081234567893' },
+    { username: 'admin1', role: 'ADMIN', name: 'ADMIN GUDANG A', companyId: companyA.id, contact: '081234567890' },
+    { username: 'admin2', role: 'ADMIN', name: 'ADMIN GUDANG B', companyId: companyB.id, contact: '081234567891' },
+    { username: 'peng1', role: 'PENGAWAS', name: 'PENGAWAS A', companyId: companyA.id, contact: '081234567892' },
+    { username: 'tek1', role: 'TEKNISI', name: 'TEKNISI A', companyId: companyA.id, contact: '081234567893' },
   ];
 
   for (const u of users) {

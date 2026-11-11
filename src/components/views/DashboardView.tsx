@@ -1,13 +1,13 @@
 import React from 'react';
 import { useAppContext } from '../../store';
-import { Package, Wrench, Truck, AlertTriangle, Users, Info } from 'lucide-react';
+import { Package, Wrench, Truck, AlertTriangle, Users, Info, Building } from 'lucide-react';
 
 interface DashboardViewProps {
   onTabChange: (tab: string) => void;
 }
 
 export const DashboardView: React.FC<DashboardViewProps> = ({ onTabChange }) => {
-  const { goods, equipment, vehicles, technicians, equipmentLogs, vehicleLogs } = useAppContext();
+  const { goods, equipment, vehicles, technicians, equipmentLogs, vehicleLogs, currentUser, companies, selectedBranchId, setSelectedBranchId } = useAppContext();
 
   const lowStockGoods = goods.filter(g => g.stock <= g.minStock);
   const brokenEquipment = equipment.filter(e => e.condition !== 'Baik');
@@ -21,9 +21,28 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onTabChange }) => 
 
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-slate-800">Dashboard Utama</h2>
-        <p className="text-slate-500 mt-1">Ringkasan status sistem manajemen gudang</p>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <div>
+          <h2 className="text-2xl font-bold text-slate-800">Dashboard Utama</h2>
+          <p className="text-slate-500 mt-1">Ringkasan status sistem manajemen gudang</p>
+        </div>
+
+        {currentUser?.role === 'pengawas' && (
+          <div className="flex items-center space-x-2 bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm">
+            <Building size={18} className="text-blue-600" />
+            <span className="text-sm font-medium text-slate-700">Cabang:</span>
+            <select
+              value={selectedBranchId}
+              onChange={(e) => setSelectedBranchId(e.target.value)}
+              className="bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">SEMUA CABANG</option>
+              {companies.map(c => (
+                <option key={c.id} value={c.id}>{c.name}</option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
 
       {/* Summary Cards */}

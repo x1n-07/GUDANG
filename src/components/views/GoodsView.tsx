@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useAppContext } from '../../store';
 import { Plus, ArrowDown, ArrowUp, History, Trash2 } from 'lucide-react';
 import { TransactionType } from '../../types';
 import { motion } from 'motion/react';
 import { ConfirmDeleteModal } from '../ConfirmDeleteModal';
+import { AutocompleteInput } from '../AutocompleteInput';
 
 export const GoodsView: React.FC = () => {
   const { goods, goodsTransactions, technicians, addGoodsItem, addGoodsTransaction, removeGoodsItem, currentUser } = useAppContext();
@@ -20,6 +21,10 @@ export const GoodsView: React.FC = () => {
   const [newItem, setNewItem] = useState({ name: '', category: '', stock: 0, minStock: 0, unit: '' });
   const [txForm, setTxForm] = useState({ type: 'IN' as TransactionType, quantity: 1, notes: '', pic: '' });
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Auto-suggest lists
+  const uniqueCategories = useMemo(() => Array.from(new Set(goods.map(item => item.category))).filter(Boolean), [goods]);
+  const uniqueUnits = useMemo(() => Array.from(new Set(goods.map(item => item.unit))).filter(Boolean), [goods]);
 
   const handleAddItem = (e: React.FormEvent) => {
     e.preventDefault();
@@ -244,9 +249,16 @@ export const GoodsView: React.FC = () => {
                   <p className="text-slate-500 text-xs mt-1">Saran / Mirip: {similarGoods.map(g => g.name).join(', ')}</p>
                 )}
               </div>
-              <div>
+              <div className="relative">
                 <label className="block text-sm font-medium text-slate-700 mb-1">Kategori</label>
-                <input required type="text" value={newItem.category} onChange={e => setNewItem({...newItem, category: e.target.value})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" />
+                <AutocompleteInput 
+                  id="category-input"
+                  value={newItem.category} 
+                  onChange={v => setNewItem({...newItem, category: v})} 
+                  options={uniqueCategories}
+                  placeholder="Pilih atau ketik kategori..."
+                  className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
@@ -257,9 +269,16 @@ export const GoodsView: React.FC = () => {
                   <label className="block text-sm font-medium text-slate-700 mb-1">Batas Minimum</label>
                   <input required type="number" min="0" value={newItem.minStock} onChange={e => setNewItem({...newItem, minStock: Number(e.target.value)})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" />
                 </div>
-                <div>
+                <div className="relative">
                   <label className="block text-sm font-medium text-slate-700 mb-1">Satuan</label>
-                  <input required type="text" placeholder="Mis: Pcs, Kg" value={newItem.unit} onChange={e => setNewItem({...newItem, unit: e.target.value})} className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" />
+                  <AutocompleteInput 
+                    id="unit-input"
+                    value={newItem.unit} 
+                    onChange={v => setNewItem({...newItem, unit: v})} 
+                    options={uniqueUnits}
+                    placeholder="Mis: Pcs, Kg"
+                    className="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  />
                 </div>
               </div>
               <div className="pt-4 flex space-x-3 justify-end">

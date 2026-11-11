@@ -43,13 +43,26 @@ export async function apiLogin(username: string, password: string) {
     body: JSON.stringify({ username, password }),
   });
   setStoredToken(data.token);
+  // Normalisasi role ke lowercase agar konsisten di seluruh aplikasi
+  const user = data.user;
+  user.role = String(user.role).toLowerCase();
   // Store user info temporarily to help with initial load
   localStorage.setItem('warehouse_user', JSON.stringify(data.user));
   return data.user;
 }
 
-export async function apiFetchDashboard() {
-  return request<any>('/dashboard/all-data');
+export async function apiFetchDashboard(branchId?: string) {
+  const qs = branchId ? `?branchId=${encodeURIComponent(branchId)}` : '';
+  return request<any>(`/dashboard/all-data${qs}`).then((data) => {
+    // Normalisasi role users ke lowercase agar konsisten dengan login
+    if (data.users) {
+      data.users = data.users.map((u) => ({
+        ...u,
+        role: String(u.role).toLowerCase(),
+      }));
+    }
+    return data;
+  });
 }
 
 // ── Goods ──
